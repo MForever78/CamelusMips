@@ -1,7 +1,5 @@
 #include <iostream>
-#include <cstdint>
 #include <vector>
-#include <algorithm>
 #include "Assembler.hpp"
 
 using namespace std;
@@ -15,5 +13,5 @@ int main() {
 
     vector<string> inst(inst_sample, inst_sample + sizeof(inst_sample) / sizeof(string));
     Assembler assembler(inst);
-    cout << assembler << endl;
+    cout << assembler;
 }
