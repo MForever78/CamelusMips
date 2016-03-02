@@ -21,13 +21,13 @@ Assembler::Assembler() {
 Assembler::Assembler(const vector<string> &instOriginal) {
     this->instOriginal = instOriginal;
 
-    const static regex rTypeExp ("(addu|add|subu|sub|and|or|xor|nor|sltu|slt|sllv|srlv|srav|jr)\\b");
-    const static regex shiftTypeExp ("(sll|srl|sra)\\b");
+    const static regex rTypeExp ("(addu|add|subu|sub|and|or|xor|nor|sltu|slt|sllv|srlv|srav|jr|sll|srl|sra)\\b");
     const static regex iTypeExp ("(addiu|addi|andi|ori|xori|lui|lw|sw|beq|bne|sltiu|slti)\\b");
     const static regex jTypeExp ("(jal|j)\\b");
 
-    const static regex operandExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
-    const static regex operandWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*(\\d+)");
+    const static regex operandExp ("\\$(\\w+)");
+    const static regex operandsExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
+    const static regex operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*(\\d+)");
     const static map<string, int> funcMap = {
         {"addu",    0b100001},
         {"add",     0b100000},
@@ -53,40 +53,50 @@ Assembler::Assembler(const vector<string> &instOriginal) {
         smatch match;
 
         if (regex_search(inst, match, rTypeExp)) {
+            // R-type
+
             opcode = 0b000000;
             string funcName = match[0];
 
-            string rsName, rtName, rdName;
-            smatch operands;
-            if (regex_search(inst, operands, operandExp)) {
+            string rsName, rtName, rdName, immName;
+            smatch operands, operandsWithImm, operand;
+
+            if (regex_search(inst, operands, operandsExp)) {
+                // Regular R-type
+                // i.e. Assembly with rs, rt, rd
+
                 rsName = operands[2];
                 rtName = operands[3];
                 rdName = operands[1];
                 rs = getOperand(rsName);
                 rt = getOperand(rtName);
                 rd = getOperand(rdName);
-                shamt = 0;
+                shamt = 0b00000;
                 func = funcMap.at(funcName);
-            } else {
-                cout << "Syntax error with statement:" << endl;
-                cout << inst << endl;
-            }
-        } else if (regex_search(inst, match, shiftTypeExp)) {
-            opcode = 0b000000;
-            string funcName = match[0];
+            } else if (regex_search(inst, operandsWithImm, operandsWithImmExp)) {
+                // Shift R-type
+                // i.e. Assembly with rt, rd, shamt
 
-            string rtName, rdName, immName;
-            smatch operandWithImm;
-            if (regex_search(inst, operandWithImm, operandWithImmExp)) {
-                rdName = operandWithImm[2];
-                rtName = operandWithImm[1];
-                immName = operandWithImm[3];
+                rdName = operandsWithImm[2];
+                rtName = operandsWithImm[1];
+                immName = operandsWithImm[3];
                 rs = 0b00000;
                 rd = getOperand(rdName);
                 rt = getOperand(rtName);
                 shamt = stoul(immName);
                 func = funcMap.at(funcName);
+            } else if (regex_search(inst, operand, operandExp)) {
+                // JR
+
+                rsName = operand[1];
+                rs = getOperand(rsName);
+                rd = 0b00000;
+                rt = 0b00000;
+                shamt = 0b00000;
+                func = funcMap.at(funcName);
             } else {
+                // Syntax Error
+
                 cout << "Syntax error with statement:" << endl;
                 cout << inst << endl;
             }
