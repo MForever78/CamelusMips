@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <bitset>
+#include <string>
 
 #include "Assembler.hpp"
 #include "Assembly.hpp"
@@ -20,10 +21,13 @@ Assembler::Assembler() {
 Assembler::Assembler(const vector<string> &instOriginal) {
     this->instOriginal = instOriginal;
 
-    const static regex rTypeExp ("(addu|add|subu|sub|and|or|xor|nor|sltu|slt|sllv|srlv|srav|sll|srl|sra|jr)\\b");
+    const static regex rTypeExp ("(addu|add|subu|sub|and|or|xor|nor|sltu|slt|sllv|srlv|srav|jr)\\b");
+    const static regex shiftTypeExp ("(sll|srl|sra)\\b");
     const static regex iTypeExp ("(addiu|addi|andi|ori|xori|lui|lw|sw|beq|bne|sltiu|slti)\\b");
     const static regex jTypeExp ("(jal|j)\\b");
+
     const static regex operandExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
+    const static regex operandWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*(\\d+)");
     const static map<string, int> funcMap = {
         {"addu",    0b100001},
         {"add",     0b100000},
@@ -55,28 +59,47 @@ Assembler::Assembler(const vector<string> &instOriginal) {
             string rsName, rtName, rdName;
             smatch operands;
             if (regex_search(inst, operands, operandExp)) {
-                rsName = operands[1];
-                rtName = operands[2];
-                rdName = operands[3];
+                rsName = operands[2];
+                rtName = operands[3];
+                rdName = operands[1];
                 rs = getOperand(rsName);
                 rt = getOperand(rtName);
                 rd = getOperand(rdName);
-                func = funcMap.at(funcName);
                 shamt = 0;
+                func = funcMap.at(funcName);
+            } else {
+                cout << "Syntax error with statement:" << endl;
+                cout << inst << endl;
+            }
+        } else if (regex_search(inst, match, shiftTypeExp)) {
+            opcode = 0b000000;
+            string funcName = match[0];
 
-                uint32_t instruction = opcode;
-                instruction = (instruction << 5) | rs;
-                instruction = (instruction << 5) | rt;
-                instruction = (instruction << 5) | rd;
-                instruction = (instruction << 5) | shamt;
-                instruction = (instruction << 6) | func;
-
-                instAssembled.push_back(Assembly(instruction));
+            string rtName, rdName, immName;
+            smatch operandWithImm;
+            if (regex_search(inst, operandWithImm, operandWithImmExp)) {
+                rdName = operandWithImm[2];
+                rtName = operandWithImm[1];
+                immName = operandWithImm[3];
+                rs = 0b00000;
+                rd = getOperand(rdName);
+                rt = getOperand(rtName);
+                shamt = stoul(immName);
+                func = funcMap.at(funcName);
             } else {
                 cout << "Syntax error with statement:" << endl;
                 cout << inst << endl;
             }
         }
+
+        uint32_t instruction = opcode;
+        instruction = (instruction << 5) | rs;
+        instruction = (instruction << 5) | rt;
+        instruction = (instruction << 5) | rd;
+        instruction = (instruction << 5) | shamt;
+        instruction = (instruction << 6) | func;
+
+        instAssembled.push_back(Assembly(instruction));
     }
 }
 
