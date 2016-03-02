@@ -1,9 +1,11 @@
-#include "Assembler.hpp"
 #include <regex>
 #include <map>
 #include <cstdint>
 #include <cstdio>
 #include <bitset>
+
+#include "Assembler.hpp"
+#include "Assembly.hpp"
 
 using namespace std;
 
@@ -53,9 +55,9 @@ Assembler::Assembler(const vector<string> &instOriginal) {
             string rsName, rtName, rdName;
             smatch operands;
             if (regex_search(inst, operands, operandExp)) {
-                rsName = operands[0];
-                rtName = operands[1];
-                rdName = operands[2];
+                rsName = operands[1];
+                rtName = operands[2];
+                rdName = operands[3];
                 rs = getOperand(rsName);
                 rt = getOperand(rtName);
                 rd = getOperand(rdName);
@@ -63,18 +65,23 @@ Assembler::Assembler(const vector<string> &instOriginal) {
                 shamt = 0;
 
                 uint32_t instruction = opcode;
-                instruction = (instruction << 6) + rs;
-                instruction = (instruction << 5) + rt;
-                instruction = (instruction << 5) + rd;
-                instruction = (instruction << 5) + shamt;
-                instruction = (instruction << 5) + func;
-                instAssembled.push_back(instruction);
+                instruction = (instruction << 5) | rs;
+                instruction = (instruction << 5) | rt;
+                instruction = (instruction << 5) | rd;
+                instruction = (instruction << 5) | shamt;
+                instruction = (instruction << 6) | func;
+
+                instAssembled.push_back(Assembly(instruction));
             } else {
                 cout << "Syntax error with statement:" << endl;
                 cout << inst << endl;
             }
         }
     }
+}
+
+vector<Assembly> Assembler::getInstAssembled() {
+    return instAssembled;
 }
 
 uint32_t Assembler::getOperand(string &operandName) {
@@ -92,12 +99,13 @@ uint32_t Assembler::getOperand(string &operandName) {
         if (regNames[i] == operandName) return i;
     }
 
+    cout << "Unrecongnized reg:" << operandName << endl;
     return -1;
 }
 
 ostream &operator<< (ostream &os, const Assembler &assembler) {
     for (auto inst: assembler.instAssembled) {
-        os << bitset<32>(inst) << endl;
+        os << inst << endl;
     }
     return os;
 }

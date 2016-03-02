@@ -5,10 +5,15 @@
 #include <cstdint>
 #include <iostream>
 
+#include "Assembly.hpp"
+
 class Assembler {
 public:
     Assembler();
     Assembler(const std::vector<std::string> &instOriginal);
+
+    // getter
+    std::vector<Assembly> getInstAssembled();
 
     friend std::ostream &operator<<(std::ostream &os, const Assembler &assembler);
 
@@ -16,7 +21,7 @@ public:
 
 private:
     std::vector<std::string> instOriginal;
-    std::vector<std::uint32_t> instAssembled;
+    std::vector<Assembly> instAssembled;
 
     std::uint32_t getOperand(std::string &operandName);
 };
