@@ -1,4 +1,17 @@
-cmake_minimum_required(VERSION 2.8)
-project(CamelusMips)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.2 FATAL_ERROR)
+PROJECT(CamelusMips CXX)
+
+SET(CMAKE_CXX_STANDARD 14)
+
+## Project Output Paths
+SET(MAINFOLDER ${PROJECT_SOURCE_DIR})
+SET(EXECUTABLE_OUTPUT_PATH "${MAINFOLDER}/bin")
+SET(LIBRARY_OUTPUT_PATH "${MAINFOLDER}/lib")
+
+## Project Sources
+FILE(GLOB_RECURSE PROJECT_SRCS ${MAINFOLDER}/src/*.cpp ${MAINFOLDER}/src/*.h)
+FILE(GLOB_RECURSE TEST_SRCS ${MAINFOLDER}/test/*.cpp ${MAINFOLDER}/test/*.h)
 
 add_subdirectory(src)
+add_subdirectory(thirdparty)
+add_subdirectory(test)
