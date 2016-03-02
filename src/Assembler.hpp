@@ -17,8 +17,6 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Assembler &assembler);
 
-    static const int RS, RT, RD;
-
 private:
     std::vector<std::string> instOriginal;
     std::vector<Assembly> instAssembled;

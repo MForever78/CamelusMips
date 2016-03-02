@@ -10,10 +10,6 @@
 
 using namespace std;
 
-const int Assembler::RS = 0;
-const int Assembler::RT = 1;
-const int Assembler::RD = 2;
-
 Assembler::Assembler() {
 
 }
