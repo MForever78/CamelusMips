@@ -1,5 +1,5 @@
-## Set compiler flags to turn off optimization and enable coverage
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+## Set compiler flags to turn off optimization
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
 
 ## Build Test Executables
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include)                                   
@@ -14,7 +14,7 @@ ADD_CUSTOM_TARGET(tests ${EXECUTABLE_OUTPUT_PATH}/${TEST_BIN}
     DEPENDS ${TEST_BIN} COMMENT "Executing unit tests..." SOURCES ${TEST_SRCS})
 
 ## Setup Code Coverage if feature is available via compiler
-IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-   "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    SETUP_TARGET_FOR_COVERAGE(${PROJECT_NAME}-coverage ${TEST_BIN} coverage)
-ENDIF()
+## IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+##    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+##     SETUP_TARGET_FOR_COVERAGE(${PROJECT_NAME}-coverage ${TEST_BIN} coverage)
+## ENDIF()
