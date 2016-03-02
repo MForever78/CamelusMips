@@ -19,6 +19,10 @@ public:
         return lhs.machineCode == rhs.machineCode;
     }
 
+    friend bool operator!=(const Assembly &lhs, const Assembly &rhs) {
+        return !(lhs == rhs);
+    }
+
 private:
     std::uint32_t machineCode;
 };
