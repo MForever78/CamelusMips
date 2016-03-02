@@ -2,17 +2,18 @@
 #include <cstdint>
 #include <vector>
 #include <algorithm>
+#include "Assembler.hpp"
 
 using namespace std;
 
 int main() {
-    const int inst_sample[] = {
-
+    const string inst_sample[] = {
+        "add  $t0, $zero, $zero",
+        "addi $t1, $t0, 1",
+        "add  $t2, $t1, $t1"
     };
 
-    vector<int> inst(cbegin(inst_sample), cend(inst_sample));
-
-    Simulator simulator;
-
-    simulator.exec(&inst);
+    vector<string> inst(inst_sample, inst_sample + sizeof(inst_sample) / sizeof(string));
+    Assembler assembler(inst);
+    cout << assembler << endl;
 }
