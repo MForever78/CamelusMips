@@ -16,6 +16,8 @@ const regex Assembler::jTypeExp ("(jal|j)\\b");
 
 const regex Assembler::operandExp ("\\$(\\w+)");
 const regex Assembler::operandsExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
+const regex Assembler::operandWithImmExp ("\\$(\\w+),\\s*([0-9+-]+)$");
+const regex Assembler::operandsWithAddrExp ("\\$(\\w+),\\s*([0-9+-]+)\\s*\\(\\$(\\w+)\\)");
 const regex Assembler::operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*([0-9+-]+)");
 
 const map<string, int> Assembler::funcMap = {
@@ -87,7 +89,6 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
     if (regex_search(inst, operands, operandsExp)) {
         // Regular R-type
         // i.e. Assembly with rs, rt, rd
-
         rsName = operands[2];
         rtName = operands[3];
         rdName = operands[1];
@@ -99,7 +100,6 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
     } else if (regex_search(inst, operandsWithImm, operandsWithImmExp)) {
         // Shift R-type
         // i.e. Assembly with rt, rd, shamt
-
         rdName = operandsWithImm[2];
         rtName = operandsWithImm[1];
         immName = operandsWithImm[3];
@@ -110,7 +110,6 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
         func = funcMap.at(funcName);
     } else if (regex_search(inst, operand, operandExp)) {
         // JR
-
         rsName = operand[1];
         rs = getOperand(rsName);
         rd = 0b00000;
@@ -119,7 +118,6 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
         func = funcMap.at(funcName);
     } else {
         // Syntax Error
-
         cout << "Syntax error with R-type statement:" << endl;
         cout << inst << endl;
     }
@@ -141,9 +139,11 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
     string funcName = match[0];
 
     string rsName, rtName, immName;
-    smatch operandsWithImm;
+    smatch operandsWithImm, operandWithImm, operandsWithAddr;
 
     if (regex_search(inst, operandsWithImm, operandsWithImmExp)) {
+        // Regular I-type
+        // i.e. Assembly with rs, rt, immediate
         opcode = opcodeMap.at(funcName);
         rsName = operandsWithImm[2];
         rtName = operandsWithImm[1];
@@ -152,7 +152,31 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
         rs = getOperand(rsName);
         rt = getOperand(rtName);
         imm = static_cast<uint32_t>(stoi(immName));
+    } else if (regex_search(inst, operandWithImm, operandWithImmExp)) {
+        // lui
+        opcode = opcodeMap.at(funcName);
+        rtName = operandWithImm[1];
+        immName = operandWithImm[2];
+
+        rs = 0b00000;
+        rt = getOperand(rtName);
+        imm = static_cast<uint32_t>(stoi(immName));
+    } else if (regex_search(inst, operandsWithAddr, operandsWithAddrExp)) {
+        // Save load I-type
+        opcode = opcodeMap.at(funcName);
+        rsName = operandsWithAddr[3];
+        rtName = operandsWithAddr[1];
+        immName = operandsWithAddr[2];
+
+        rs = getOperand(rsName);
+        rt = getOperand(rtName);
+        imm = static_cast<uint32_t>(stoi(immName));
+    } else {
+        // Syntax Error
+        cout << "Syntax error with R-type statement:" << endl;
+        cout << inst << endl;
     }
+
     uint32_t instruction = opcode;
     instruction = (instruction << 5) | rs;
     instruction = (instruction << 5) | rt;

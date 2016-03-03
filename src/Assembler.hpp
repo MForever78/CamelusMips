@@ -26,6 +26,8 @@ private:
 
     const static std::regex operandExp;
     const static std::regex operandsExp;
+    const static std::regex operandWithImmExp;
+    const static std::regex operandsWithAddrExp;
     const static std::regex operandsWithImmExp;
     const static std::map<std::string, int> funcMap;
     const static std::map<std::string, int> opcodeMap;

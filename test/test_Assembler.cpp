@@ -109,3 +109,37 @@ TEST(AssemblerTest, RegularITypeTest) {
 
     EXPECT_EQ(instAssembled, assembly);
 }
+
+TEST(AssemblerTest, LuiITypeTest) {
+    std::string instLiteral[] = {
+        "lui    $t0, 100"
+    };
+
+    std::uint32_t assemblyLiteral[] = {
+        0b00111100000010000000000001100100      // lui
+    };
+
+    Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
+    std::vector<Assembly> instAssembled = assembler.getInstAssembled();
+    std::vector<Assembly> assembly (assemblyLiteral, assemblyLiteral + sizeof(assemblyLiteral) / sizeof(std::uint32_t));
+
+    EXPECT_EQ(instAssembled, assembly);
+}
+
+TEST(AssemblerTest, SaveLoadITypeTest) {
+    std::string instLiteral[] = {
+        "lw     $t0, 78($t1)",
+        "sw     $t0, 78($t1)"
+    };
+
+    std::uint32_t assemblyLiteral[] = {
+        0b10001101001010000000000001001110,     // lw
+        0b10101101001010000000000001001110      // sw
+    };
+
+    Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
+    std::vector<Assembly> instAssembled = assembler.getInstAssembled();
+    std::vector<Assembly> assembly (assemblyLiteral, assemblyLiteral + sizeof(assemblyLiteral) / sizeof(std::uint32_t));
+
+    EXPECT_EQ(instAssembled, assembly);
+}
