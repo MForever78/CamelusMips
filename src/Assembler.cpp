@@ -16,7 +16,8 @@ const regex Assembler::jTypeExp ("(jal|j)\\b");
 
 const regex Assembler::operandExp ("\\$(\\w+)");
 const regex Assembler::operandsExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
-const regex Assembler::operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*(\\d+)");
+const regex Assembler::operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*([0-9+-]+)");
+
 const map<string, int> Assembler::funcMap = {
     {"addu",    0b100001},
     {"add",     0b100000},
@@ -36,6 +37,20 @@ const map<string, int> Assembler::funcMap = {
     {"srav",    0b000111},
     {"jr",      0b001000}
 };
+const map<string, int> Assembler::opcodeMap = {
+    {"addi",    0b001000},
+    {"addiu",   0b001001},
+    {"andi",    0b001100},
+    {"ori",     0b001101},
+    {"xori",    0b001110},
+    {"lui",     0b001111},
+    {"lw",      0b100011},
+    {"sw",      0b101011},
+    {"beq",     0b000100},
+    {"bne",     0b000101},
+    {"slti",    0b001010},
+    {"sltiu",   0b001011}
+};
 
 Assembler::Assembler() {
 
@@ -49,9 +64,12 @@ Assembler::Assembler(const vector<string> &instOriginal) {
         smatch match;
         Assembly assembled;
 
-        if (regex_search(inst, match, Assembler::rTypeExp)) {
+        if (regex_search(inst, match, rTypeExp)) {
             // R-type
             assembled = getRTypeAssembly(inst, match);
+        } else if (regex_search(inst, match, iTypeExp)) {
+            // I-type
+            assembled = getITypeAssembly(inst, match);
         }
 
         instAssembled.push_back(assembled);
@@ -112,6 +130,33 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
     instruction = (instruction << 5) | rd;
     instruction = (instruction << 5) | shamt;
     instruction = (instruction << 6) | func;
+
+    return Assembly(instruction);
+}
+
+Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
+    uint32_t opcode, rs, rt;
+    uint32_t imm;
+    uint32_t mask = 0x0000ffff;
+    string funcName = match[0];
+
+    string rsName, rtName, immName;
+    smatch operandsWithImm;
+
+    if (regex_search(inst, operandsWithImm, operandsWithImmExp)) {
+        opcode = opcodeMap.at(funcName);
+        rsName = operandsWithImm[2];
+        rtName = operandsWithImm[1];
+        immName = operandsWithImm[3];
+
+        rs = getOperand(rsName);
+        rt = getOperand(rtName);
+        imm = static_cast<uint32_t>(stoi(immName));
+    }
+    uint32_t instruction = opcode;
+    instruction = (instruction << 5) | rs;
+    instruction = (instruction << 5) | rt;
+    instruction = (instruction << 16) | (imm & mask);
 
     return Assembly(instruction);
 }

@@ -28,12 +28,14 @@ private:
     const static std::regex operandsExp;
     const static std::regex operandsWithImmExp;
     const static std::map<std::string, int> funcMap;
+    const static std::map<std::string, int> opcodeMap;
 
     std::vector<std::string> instOriginal;
     std::vector<Assembly> instAssembled;
 
     std::uint32_t getOperand(const std::string &operandName);
     Assembly getRTypeAssembly(const std::string &inst, const std::smatch &match);
+    Assembly getITypeAssembly(const std::string &inst, const std::smatch &match);
 };
 
 #endif

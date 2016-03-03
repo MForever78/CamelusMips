@@ -81,3 +81,31 @@ TEST(AssemblerTest, JrRTypeTest) {
 
     EXPECT_EQ(instAssembled, assembly);
 }
+
+TEST(AssemblerTest, RegularITypeTest) {
+    std::string instLiteral[] = {
+        "addi   $t0, $t1, -78",
+        "addiu  $t0, $t1, 78",
+        "andi   $t0, $t1, 78",
+        "ori    $t0, $t1, 78",
+        "xori   $t0, $t1, 78",
+        "slti   $t0, $t1, 78",
+        "sltiu  $t0, $t1, 78"
+    };
+
+    std::uint32_t assemblyLiteral[] = {
+        0b00100001001010001111111110110010,     // addi
+        0b00100101001010000000000001001110,     // addiu
+        0b00110001001010000000000001001110,     // andi
+        0b00110101001010000000000001001110,     // ori
+        0b00111001001010000000000001001110,     // xori
+        0b00101001001010000000000001001110,     // slti
+        0b00101101001010000000000001001110      // sltiu
+    };
+
+    Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
+    std::vector<Assembly> instAssembled = assembler.getInstAssembled();
+    std::vector<Assembly> assembly (assemblyLiteral, assemblyLiteral + sizeof(assemblyLiteral) / sizeof(std::uint32_t));
+
+    EXPECT_EQ(instAssembled, assembly);
+}
