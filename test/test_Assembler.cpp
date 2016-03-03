@@ -143,3 +143,21 @@ TEST(AssemblerTest, SaveLoadITypeTest) {
 
     EXPECT_EQ(instAssembled, assembly);
 }
+
+TEST(AssemblerTest, JTypeTest) {
+    std::string instLiteral[] = {
+        "j      10000",
+        "jal    10078"
+    };
+
+    std::uint32_t assemblyLiteral[] = {
+        0b00001000000000000010011100010000,     // j
+        0b00001100000000000010011101011110      // jal
+    };
+
+    Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
+    std::vector<Assembly> instAssembled = assembler.getInstAssembled();
+    std::vector<Assembly> assembly (assemblyLiteral, assemblyLiteral + sizeof(assemblyLiteral) / sizeof(std::uint32_t));
+
+    EXPECT_EQ(instAssembled, assembly);
+}

@@ -14,6 +14,7 @@ const regex Assembler::rTypeExp ("(addu|add|subu|sub|and|or|xor|nor|sltu|slt|sll
 const regex Assembler::iTypeExp ("(addiu|addi|andi|ori|xori|lui|lw|sw|beq|bne|sltiu|slti)\\b");
 const regex Assembler::jTypeExp ("(jal|j)\\b");
 
+const regex Assembler::immExp ("([0-9+-]+$)");
 const regex Assembler::operandExp ("\\$(\\w+)");
 const regex Assembler::operandsExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
 const regex Assembler::operandWithImmExp ("\\$(\\w+),\\s*([0-9+-]+)$");
@@ -51,7 +52,9 @@ const map<string, int> Assembler::opcodeMap = {
     {"beq",     0b000100},
     {"bne",     0b000101},
     {"slti",    0b001010},
-    {"sltiu",   0b001011}
+    {"sltiu",   0b001011},
+    {"j",       0b000010},
+    {"jal",     0b000011}
 };
 
 Assembler::Assembler() {
@@ -72,6 +75,9 @@ Assembler::Assembler(const vector<string> &instOriginal) {
         } else if (regex_search(inst, match, iTypeExp)) {
             // I-type
             assembled = getITypeAssembly(inst, match);
+        } else if (regex_search(inst, match, jTypeExp)) {
+            // J-type
+            assembled = getJTypeAssembly(inst, match);
         }
 
         instAssembled.push_back(assembled);
@@ -181,6 +187,29 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
     instruction = (instruction << 5) | rs;
     instruction = (instruction << 5) | rt;
     instruction = (instruction << 16) | (imm & mask);
+
+    return Assembly(instruction);
+}
+
+Assembly Assembler::getJTypeAssembly(const string &inst, const smatch &match) {
+    uint32_t opcode, imm;
+    uint32_t mask = 0x03ffffff;
+    string funcName = match[0];
+
+    string immName;
+    smatch immMatch;
+    if (regex_search(inst, immMatch, immExp)) {
+        opcode = opcodeMap.at(funcName);
+        immName = immMatch[0];
+        imm = static_cast<uint32_t>(stoi(immName));
+    } else {
+        // Syntax Error
+        cout << "Syntax error with R-type statement:" << endl;
+        cout << inst << endl;
+    }
+
+    uint32_t instruction = opcode;
+    instruction = (instruction << 26) | (imm & mask);
 
     return Assembly(instruction);
 }

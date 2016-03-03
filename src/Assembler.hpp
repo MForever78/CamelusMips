@@ -24,6 +24,7 @@ private:
     const static std::regex iTypeExp;
     const static std::regex jTypeExp;
 
+    const static std::regex immExp;
     const static std::regex operandExp;
     const static std::regex operandsExp;
     const static std::regex operandWithImmExp;
@@ -38,6 +39,7 @@ private:
     std::uint32_t getOperand(const std::string &operandName);
     Assembly getRTypeAssembly(const std::string &inst, const std::smatch &match);
     Assembly getITypeAssembly(const std::string &inst, const std::smatch &match);
+    Assembly getJTypeAssembly(const std::string &inst, const std::smatch &match);
 };
 
 #endif
