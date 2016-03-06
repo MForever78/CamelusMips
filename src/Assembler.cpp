@@ -197,8 +197,7 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
         func = funcMap.at(funcName);
     } else {
         // Syntax Error
-        cout << "Syntax error with R-type statement:" << endl;
-        cout << inst << endl;
+        throw logic_error("Syntax error with R-type statement: " + inst);
     }
 
     uint32_t instruction = opcode;
@@ -252,8 +251,7 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
         imm = static_cast<uint32_t>(stoi(immName));
     } else {
         // Syntax Error
-        cout << "Syntax error with R-type statement:" << endl;
-        cout << inst << endl;
+        throw logic_error("Syntax error with I-type statement: " + inst);
     }
 
     uint32_t instruction = opcode;
@@ -277,8 +275,7 @@ Assembly Assembler::getJTypeAssembly(const string &inst, const smatch &match) {
         imm = static_cast<uint32_t>(stoi(immName));
     } else {
         // Syntax Error
-        cout << "Syntax error with R-type statement:" << endl;
-        cout << inst << endl;
+        throw logic_error("Syntax error with J-type statement: " + inst);
     }
 
     uint32_t instruction = opcode;
@@ -310,8 +307,8 @@ uint32_t Assembler::getOperand(const string &operandName) {
         if (regNames[i] == operandName) return i;
     }
 
-    cout << "Unrecongnized reg:" << operandName << endl;
-    return -1;
+    // Syntax Error
+    throw logic_error("Unrecongnized reg: " + operandName);
 }
 
 ostream &operator<< (ostream &os, const Assembler &assembler) {
