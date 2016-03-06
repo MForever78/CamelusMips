@@ -162,7 +162,7 @@ TEST(AssemblerTest, JTypeTest) {
     EXPECT_EQ(instAssembled, assembly);
 }
 
-TEST(AssemblerTest, labelTest) {
+TEST(AssemblerTest, genSymbolTableTest) {
     std::string instLiteral[] = {
         "L1:",
         "L2:",
@@ -183,4 +183,30 @@ TEST(AssemblerTest, labelTest) {
     std::map<std::string, int> symbolTableAssembled = assembler.getSymbolTable();
 
     EXPECT_EQ(symbolTableAssembled, symbolTable);
+}
+
+TEST(AssemblerTest, labelSubstituteTest) {
+    std::string instLiteral[] = {
+        "start:",
+        "       add    $t0, $zero, $zero",
+        "       addi   $t0, $t0, 15",
+        "loop:  add    $t1, $t0, $zero",
+        "       addi   $t0, $t0, -1",
+        "       bne    $t0, $zero, loop",
+        "exit:  j      start"
+    };
+
+    std::vector<std::string> instSubstituted = {
+        "add    $t0, $zero, $zero",
+        "addi   $t0, $t0, 15",
+        "add    $t1, $t0, $zero",
+        "addi   $t0, $t0, -1",
+        "bne    $t0, $zero, -12",
+        "j      0"
+    };
+
+    Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
+    std::vector<std::string> instTrimmed = assembler.getInstTrimmed();
+
+    EXPECT_EQ(instTrimmed, instSubstituted);
 }

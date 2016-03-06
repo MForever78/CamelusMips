@@ -16,12 +16,17 @@ const regex Assembler::rTypeExp ("(addu|add|subu|sub|and|or|xor|nor|sltu|slt|sll
 const regex Assembler::iTypeExp ("(addiu|addi|andi|ori|xori|lui|lw|sw|beq|bne|sltiu|slti)\\b");
 const regex Assembler::jTypeExp ("(jal|j)\\b");
 
+const regex Assembler::branchExp ("(beq|bne)\\b");
+const regex Assembler::jumpExp ("(jal|j)\\b");
+
 const regex Assembler::immExp ("([0-9+-]+$)");
+const regex Assembler::labelExp ("\\s+([a-zA-Z_]\\w*)");
 const regex Assembler::operandExp ("\\$(\\w+)");
 const regex Assembler::operandsExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
 const regex Assembler::operandWithImmExp ("\\$(\\w+),\\s*([0-9+-]+)$");
 const regex Assembler::operandsWithAddrExp ("\\$(\\w+),\\s*([0-9+-]+)\\s*\\(\\$(\\w+)\\)");
 const regex Assembler::operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*([0-9+-]+)");
+const regex Assembler::operandsWithLabelExp ("\\$\\w+,\\s*\\$\\w+,\\s*([a-zA-Z_]\\w*)");
 
 const map<string, int> Assembler::funcMap = {
     {"addu",    0b100001},
@@ -66,6 +71,7 @@ Assembler::Assembler() {
 Assembler::Assembler(const vector<string> &instOriginal) {
     instTrimmed = instOriginal;
     symbolTable = generateSymbolTable(instTrimmed);
+    substituteLabels(instTrimmed);
 
     for (auto inst: instTrimmed) {
         smatch match;
@@ -102,6 +108,8 @@ map<string, int> Assembler::generateSymbolTable(vector<string> &inst) {
             if (labelName.size() == 0) throw runtime_error("Zero length label");
 
             unMarkedLabels.push(labelName);
+
+            // trim label
             *it = it->substr(found + 1);
         }
 
@@ -109,8 +117,13 @@ map<string, int> Assembler::generateSymbolTable(vector<string> &inst) {
             // nothing left
             it = inst.erase(it);
         } else {
-            // statement remains
+            // trim possible whitespace
+            found = it->find_first_not_of(" \t");
+            if (found != string::npos) {
+                *it = it->substr(found);
+            }
 
+            // statement remains
             while (!unMarkedLabels.empty()) {
                 string labelName = unMarkedLabels.top();
                 if (symbolTable.find(labelName) != symbolTable.end()) {
@@ -144,16 +157,55 @@ void Assembler::trimComment(string &inst) {
         inst = inst.substr(0, found);
     }
 
-    // get rid of the leading whitespace
+    // get rid of the trailing whitespace
     found = inst.find_last_not_of(" \t");
     if (found != string::npos) {
         inst = inst.substr(0, found + 1);
     }
 
-    // get rid of the trailing whitespace
+    // get rid of the leading whitespace
     found = inst.find_first_not_of(" \t");
     if (found != string::npos) {
         inst = inst.substr(found);
+    }
+}
+
+void Assembler::substituteLabels(vector<string> &inst) {
+    for (int i = 0; i < inst.size(); ++i) {
+        if (regex_search(inst[i], branchExp)) {
+            // branch statement
+            smatch match;
+            if (regex_search(inst[i], match, operandsWithLabelExp)) {
+                // branch to a label
+                string labelName = match[1];
+                auto it = symbolTable.find(labelName);
+
+                if (it == symbolTable.end()) {
+                    throw logic_error("Label not found: " + labelName);
+                }
+
+                int absoluteAddr = it->second;
+
+                string relativeAddr = to_string((absoluteAddr - i - 1) * 4);
+                inst[i] = regex_replace(inst[i], regex(labelName), relativeAddr);
+            }
+        } else if (regex_search(inst[i], jumpExp)) {
+            // jump statement
+            smatch match;
+            if (regex_search(inst[i], match, labelExp)) {
+                // jump to a label
+                string labelName = match[1];
+                auto it = symbolTable.find(labelName);
+
+                if (it == symbolTable.end()) {
+                    throw logic_error("Label not found: " + labelName);
+                }
+
+                int absoluteAddr = it->second;
+
+                inst[i] = regex_replace(inst[i], regex(labelName), to_string(absoluteAddr));
+            }
+        }
     }
 }
 
@@ -290,6 +342,10 @@ vector<Assembly> Assembler::getInstAssembled() {
 
 map<string, int> Assembler::getSymbolTable() {
     return symbolTable;
+}
+
+vector<string> Assembler::getInstTrimmed() {
+    return instTrimmed;
 }
 
 uint32_t Assembler::getOperand(const string &operandName) {
