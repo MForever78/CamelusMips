@@ -161,3 +161,26 @@ TEST(AssemblerTest, JTypeTest) {
 
     EXPECT_EQ(instAssembled, assembly);
 }
+
+TEST(AssemblerTest, labelTest) {
+    std::string instLiteral[] = {
+        "L1:",
+        "L2:",
+        "       add    $t0, $zero, $zero",
+        "       addi   $t0, $t0, 15",
+        "L3:    add    $t1, $t0, $zero",
+        "exit:  xor    $t1, $t1, $t1"
+    };
+
+    std::map<std::string, int> symbolTable = {
+        {"L1", 0},
+        {"L2", 0},
+        {"L3", 2},
+        {"exit", 3}
+    };
+
+    Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
+    std::map<std::string, int> symbolTableAssembled = assembler.getSymbolTable();
+
+    EXPECT_EQ(symbolTableAssembled, symbolTable);
+}

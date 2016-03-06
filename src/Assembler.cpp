@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <bitset>
 #include <string>
+#include <stdexcept>
+#include <stack>
 
 #include "Assembler.hpp"
 #include "Assembly.hpp"
@@ -62,10 +64,10 @@ Assembler::Assembler() {
 }
 
 Assembler::Assembler(const vector<string> &instOriginal) {
-    this->instOriginal = instOriginal;
+    instTrimmed = instOriginal;
+    symbolTable = generateSymbolTable(instTrimmed);
 
-
-    for (auto inst: this->instOriginal) {
+    for (auto inst: instTrimmed) {
         smatch match;
         Assembly assembled;
 
@@ -81,6 +83,77 @@ Assembler::Assembler(const vector<string> &instOriginal) {
         }
 
         instAssembled.push_back(assembled);
+    }
+}
+
+map<string, int> Assembler::generateSymbolTable(vector<string> &inst) {
+    map<string, int> symbolTable;
+    stack<string> unMarkedLabels;
+    int count = 0;
+    for (auto it = inst.begin(); it < inst.end();) {
+        trimComment(*it);
+
+        size_t found;
+        found = it->find_first_of(':');
+        if (found != string::npos) {
+            // line contains label
+            string labelName = it->substr(0, found);
+
+            if (labelName.size() == 0) throw runtime_error("Zero length label");
+
+            unMarkedLabels.push(labelName);
+            *it = it->substr(found + 1);
+        }
+
+        if (it->size() == 0) {
+            // nothing left
+            it = inst.erase(it);
+        } else {
+            // statement remains
+
+            while (!unMarkedLabels.empty()) {
+                string labelName = unMarkedLabels.top();
+                if (symbolTable.find(labelName) != symbolTable.end()) {
+                    throw runtime_error("Duplicated label name");
+                } else {
+                    symbolTable[labelName] = count;
+                }
+                unMarkedLabels.pop();
+            }
+
+            count++;
+            it++;
+        }
+    }
+
+    return symbolTable;
+}
+
+void Assembler::trimComment(string &inst) {
+    size_t found;
+
+    // get rid of line comment
+    found = inst.find_first_of('#');
+    if (found != string::npos) {
+        inst = inst.substr(0, found);
+    }
+
+    // get rid of semicolumn and garbage behind it
+    found = inst.find_first_of(';');
+    if (found != string::npos) {
+        inst = inst.substr(0, found);
+    }
+
+    // get rid of the leading whitespace
+    found = inst.find_last_not_of(" \t");
+    if (found != string::npos) {
+        inst = inst.substr(0, found + 1);
+    }
+
+    // get rid of the trailing whitespace
+    found = inst.find_first_not_of(" \t");
+    if (found != string::npos) {
+        inst = inst.substr(found);
     }
 }
 
@@ -216,6 +289,10 @@ Assembly Assembler::getJTypeAssembly(const string &inst, const smatch &match) {
 
 vector<Assembly> Assembler::getInstAssembled() {
     return instAssembled;
+}
+
+map<string, int> Assembler::getSymbolTable() {
+    return symbolTable;
 }
 
 uint32_t Assembler::getOperand(const string &operandName) {
