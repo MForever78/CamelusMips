@@ -15,9 +15,9 @@ public:
     Assembler(const std::vector<std::string> &instOriginal);
 
     // getter
-    std::vector<Assembly> getInstAssembled();
-    std::map<std::string, int> getSymbolTable();
-    std::vector<std::string> getInstTrimmed();
+    std::vector<Assembly> getInstAssembled() const;
+    std::map<std::string, int> getSymbolTable() const;
+    std::vector<std::string> getInstTrimmed() const;
 
     friend std::ostream &operator<<(std::ostream &os, const Assembler &assembler);
 

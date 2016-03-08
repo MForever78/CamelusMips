@@ -5,13 +5,21 @@
 using namespace std;
 
 int main() {
-    const string inst_sample[] = {
-        "add  $t0, $zero, $zero",
-        "addi $t1, $t0, 1",
-        "add  $t2, $t1, $t1"
+    const string instLiteral[] = {
+        "start:",
+        "       add    $t0, $zero, $zero",
+        "       addi   $t0, $t0, 15",
+        "loop:  add    $t1, $t0, $zero",
+        "       addi   $t0, $t0, -1",
+        "       bne    $t0, $zero, loop",
+        "exit:  j      start"
     };
 
-    vector<string> inst(inst_sample, inst_sample + sizeof(inst_sample) / sizeof(string));
+    vector<string> inst(instLiteral, instLiteral + sizeof(instLiteral) / sizeof(string));
     Assembler assembler(inst);
-    cout << assembler;
+
+    vector<Assembly> instAssembled = assembler.getInstAssembled();
+    for (auto assembly: instAssembled) {
+        cout << assembly.toHex() << "," << endl;
+    }
 }

@@ -336,15 +336,15 @@ Assembly Assembler::getJTypeAssembly(const string &inst, const smatch &match) {
     return Assembly(instruction);
 }
 
-vector<Assembly> Assembler::getInstAssembled() {
+vector<Assembly> Assembler::getInstAssembled() const {
     return instAssembled;
 }
 
-map<string, int> Assembler::getSymbolTable() {
+map<string, int> Assembler::getSymbolTable() const {
     return symbolTable;
 }
 
-vector<string> Assembler::getInstTrimmed() {
+vector<string> Assembler::getInstTrimmed() const {
     return instTrimmed;
 }
 
