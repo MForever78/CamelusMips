@@ -13,8 +13,10 @@ Yet Another MIPS Emulator.
 ## Road Map
 
 - [x] Assembler
+- [x] Exporter
+    - [x] Export to Xilinx coe file, ASCII hex, ASCII bin, and binary file
+- [ ] MIPS CPU core
 - [ ] Basic GUI
-- [ ] MIPS 5-stage pipeline CPU core
 - [ ] Peripheral 
     - [ ] VGA
     - [ ] PS2 keyboard
