@@ -28,6 +28,10 @@ public:
         return binBlocks;
     }
 
+    std::uint32_t getMachineCode() const {
+        return machineCode;
+    }
+
     friend std::ostream &operator<< (std::ostream &os, const Assembly &assembly) {
         os << std::bitset<32> (assembly.machineCode);
         return os;
