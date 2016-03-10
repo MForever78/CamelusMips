@@ -231,8 +231,8 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
     } else if (regex_search(inst, operandsWithImm, operandsWithImmExp)) {
         // Shift R-type
         // i.e. Assembly with rt, rd, shamt
-        rdName = operandsWithImm[2];
-        rtName = operandsWithImm[1];
+        rdName = operandsWithImm[1];
+        rtName = operandsWithImm[2];
         immName = operandsWithImm[3];
         rs = 0b00000;
         rd = getOperand(rdName);

@@ -54,9 +54,9 @@ TEST(AssemblerTest, ShiftRTypeTest) {
     };
 
     std::uint32_t assemblyLiteral[] = {
-        0b00000000000010000100101111000000,     // sll
-        0b00000000000010000100101111000010,     // srl
-        0b00000000000010000100101111000011      // sra
+        0b00000000000010010100001111000000,     // sll
+        0b00000000000010010100001111000010,     // srl
+        0b00000000000010010100001111000011      // sra
     };
 
     Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
