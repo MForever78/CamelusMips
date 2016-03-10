@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "Assembler.hpp"
+#include "Processor.hpp"
 
 using namespace std;
 
@@ -19,7 +20,6 @@ int main() {
     Assembler assembler(inst);
 
     vector<Assembly> instAssembled = assembler.getInstAssembled();
-    for (auto assembly: instAssembled) {
-        cout << assembly.toHex() << "," << endl;
-    }
+    Processor cpu(instAssembled);
+    cpu.run();
 }
