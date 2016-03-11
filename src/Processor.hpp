@@ -9,8 +9,7 @@
 class Processor {
 public:
     Processor(std::vector<Assembly> &instIn): instructions(instIn), running(false), pc(0) {
-        for (auto reg: memory)
-            reg = 0;
+        regs[0] = 0;
     }
 
     void run();
@@ -28,7 +27,8 @@ private:
     // core member
     std::vector<Assembly> instructions;
     uint32_t pc;
-    uint32_t memory[32];
+    uint32_t regs[32];
+    uint32_t memory[65536];
 };
 
 #endif
