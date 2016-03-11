@@ -16,7 +16,7 @@ Yet Another MIPS Emulator.
 - [x] Disassembler
 - [x] Exporter
     - [x] Export to Xilinx coe file, ASCII hex, ASCII bin, and binary file
-- [ ] MIPS CPU core
+- [x] MIPS CPU core
 - [ ] Basic GUI
 - [ ] Peripheral 
     - [ ] VGA
