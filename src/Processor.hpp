@@ -8,14 +8,20 @@
 
 class Processor {
 public:
-    Processor(std::vector<Assembly> &instIn): instructions(instIn), running(false), pc(0) {
+    Processor();
+    Processor(std::vector<Assembly> &instIn): instructions(instIn), pc(0) {
         regs[0] = 0;
     }
 
-    void run();
+    void tick();
 
     // setter
     void load(std::vector<Assembly> &instIn);
+
+    // getter
+    uint32_t getPC() const {
+        return pc;
+    }
 
 private:
     // status
