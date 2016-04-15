@@ -20,6 +20,7 @@ Yet Another MIPS Emulator.
 - [ ] Basic GUI
 - [ ] Peripheral 
     - [x] VGA
+    - [ ] Timer
     - [ ] PS2 keyboard
     - [ ] Serial port
     - [ ] Ethernet
