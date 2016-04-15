@@ -5,14 +5,11 @@
 #include <cstdint>
 #include "Assembly.hpp"
 #include "Disassembler.hpp"
+#include "Bus.hpp"
 
 class Processor {
 public:
-    Processor();
-    Processor(std::vector<Assembly> &instIn): instructions(instIn), pc(0) {
-        regs[0] = 0;
-    }
-
+    Processor(std::shared_ptr<Bus> bus): pc(0), regs(), bus(bus) {};
     void tick();
 
     // setter
@@ -31,10 +28,9 @@ private:
     Disassembler d;
 
     // core member
-    std::vector<Assembly> instructions;
-    uint32_t pc;
-    uint32_t regs[32];
-    uint32_t memory[65536];
+    std::uint32_t pc;
+    std::uint32_t regs[32];
+    std::shared_ptr<Bus> bus;
 };
 
 #endif

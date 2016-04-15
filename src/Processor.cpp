@@ -1,23 +1,17 @@
 #include <vector>
+#include <memory>
 #include <iostream>
 #include <iomanip>
 #include <thread>
 #include <chrono>
 
 #include "Processor.hpp"
+#include "Device.hpp"
 
 using namespace std;
 
-Processor::Processor() {}
-
-void Processor::load(vector<Assembly> &instIn) {
-    instructions = instIn;
-    pc = 0;
-    regs[0] = 0;
-}
-
 void Processor::tick() {
-    d.deAsm(instructions[pc >> 2]);
+    d.deAsm(bus->at(pc >> 2)->get());
     pc += 4;
 
     switch(d.opcode) {
@@ -56,8 +50,8 @@ void Processor::tick() {
         case 0b001101: regs[d.rt] = regs[d.rs] | d.signedExtImm; break;               // ori
         case 0b001110: regs[d.rt] = regs[d.rs] ^ d.signedExtImm; break;               // xori
         case 0b001111: regs[d.rt] = d.signedExtImm << 16; break;                      // lui
-        case 0b100011: regs[d.rt] = memory[d.rs + d.signedExtImm]; break;             // lw
-        case 0b101011: memory[d.rs + d.signedExtImm] = regs[d.rt]; break;             // sw
+        case 0b100011: regs[d.rt] = bus->at(d.rs + d.signedExtImm)->get(); break;     // lw
+        case 0b101011: bus->at(d.rs + d.signedExtImm)->set(regs[d.rt]); break;        // sw
         case 0b000100: if (regs[d.rs] == regs[d.rt]) pc += d.signedExtImm; break;     // beq
         case 0b000101: if (regs[d.rt] != regs[d.rs]) pc += d.signedExtImm; break;     // bne
         case 0b001010: regs[d.rt] = regs[d.rs] < d.signedExtImm ? 1 : 0; break;       // slti
