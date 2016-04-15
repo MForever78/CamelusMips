@@ -1,1 +1,2 @@
+add_subdirectory(easylogging)
 add_subdirectory(googletest)
