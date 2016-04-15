@@ -19,7 +19,7 @@ Yet Another MIPS Emulator.
 - [x] MIPS CPU core
 - [ ] Basic GUI
 - [ ] Peripheral 
-    - [ ] VGA
+    - [x] VGA
     - [ ] PS2 keyboard
     - [ ] Serial port
     - [ ] Ethernet
