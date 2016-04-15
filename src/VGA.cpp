@@ -15,10 +15,9 @@ VGA::VGA() {
 
     for (int i = 0; i < 600; i++) {
         for (int j = 0; j < 800; j++) {
-            int c = ((((i&0x8)==0)^((j&0x8))==0))*255;
-            vram[i][j][0] = (GLubyte) c;
-            vram[i][j][1] = (GLubyte) c;
-            vram[i][j][2] = (GLubyte) c;
+            vram[i][j][0] = 0;
+            vram[i][j][1] = 0;
+            vram[i][j][2] = 0;
         }
     }
 
