@@ -1,15 +1,51 @@
 #include <memory>
 #include <thread>
 #include <chrono>
+#include <vector>
 
 #include "Assembly.hpp"
 #include "Assembler.hpp"
 #include "VGA.hpp"
+#include "Memory.hpp"
+#include "Bus.hpp"
+#include "Processor.hpp"
 #include "System.hpp"
+
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
 
 using namespace std;
 
 System::System() {
+    /*
+        Hardware initailize order:
+            1. VGA
+            2. Bus, with peripherals as parameter
+            3. CPU, with bus as parameter
+    */
+
+    memory.reset(new Memory());
+    LOG(INFO) << "Initialized memory...";
+
+    vga.reset(new VGA());
+    LOG(INFO) << "Initialized VGA...";
+
+    // Initialize IO space
+    vector<pair<Range, shared_ptr<Device>>> busOption;
+
+    busOption.push_back(make_pair(Range(0x00000000, 0x7FFFFFFF), static_pointer_cast<Device>(memory)));
+    busOption.push_back(make_pair(Range(0x80000001, 0x80FFFFFF), static_pointer_cast<Device>(vga)));
+
+    // Initialize bus with IO space config
+    bus.reset(new Bus(busOption));
+    LOG(INFO) << "Initialized bus...";
+
+    // Initialize cpu with bus
+    cpu.reset(new Processor(bus));
+    LOG(INFO) << "Initialized CPU...";
+
+    // Initialize demo instructions
     const string instLiteral[] = {
         "start:",
         "       add    $t0, $zero, $zero",
@@ -22,19 +58,24 @@ System::System() {
 
     vector<string> inst(instLiteral, instLiteral + sizeof(instLiteral) / sizeof(string));
     Assembler assembler(inst);
+    LOG(INFO) << "Assembled instructions...";
 
     vector<Assembly> instAssembled = assembler.getInstAssembled();
-    cpu.load(instAssembled);
+
+    // Load instructions into memory
+    memory->load(instAssembled);
+    LOG(INFO) << "Loaded instructions to memory...";
 
     process = new thread([this] {
+        LOG(INFO) << "CPU starts to run...";
         for (;;) {
-            cpu.tick();
+            cpu->tick();
             this_thread::sleep_for(chrono::milliseconds(1000));
         }
     });
 
-    initVGA();
     for (;;) {
+        // Must pull events in the main thread
         vga->pollEvents();
         this_thread::sleep_for(chrono::milliseconds(100));
     }
@@ -42,9 +83,4 @@ System::System() {
 
 System::~System() {
     process->join();
-}
-
-void System::initVGA() {
-    unique_ptr<VGA> vp(new VGA());
-    vga = std::move(vp);
 }

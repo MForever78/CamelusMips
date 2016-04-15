@@ -4,8 +4,10 @@
 #include <memory>
 
 #include "Assembler.hpp"
+#include "Bus.hpp"
 #include "Processor.hpp"
 #include "VGA.hpp"
+#include "Memory.hpp"
 
 class System {
 public:
@@ -14,9 +16,10 @@ public:
     void initVGA();
 
 private:
-    // Processor is necessary, but vga is optional
-    Processor cpu;
-    std::unique_ptr<VGA> vga;
+    std::shared_ptr<Bus> bus;
+    std::shared_ptr<Processor> cpu;
+    std::shared_ptr<VGA> vga;
+    std::shared_ptr<Memory> memory;
 
     std::thread *process;
 };
