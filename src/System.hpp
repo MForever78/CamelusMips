@@ -11,10 +11,12 @@
 #include "VGA.hpp"
 #include "Memory.hpp"
 #include "Coprocessor.hpp"
+#include "Options.hpp"
 
 class System {
 public:
-    System();
+    System(Options opt);
+    System(): System(Options()) {};
 
 private:
     std::shared_ptr<Bus> bus;
@@ -24,7 +26,9 @@ private:
     std::shared_ptr<Memory> memory;
 
     std::thread *process;
-    std::atomic<bool> shouldQuit;
+    std::atomic<bool> systemShouldQuit;
+
+    Options options;
 };
 
 #endif

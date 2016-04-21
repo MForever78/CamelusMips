@@ -17,7 +17,7 @@ INITIALIZE_EASYLOGGINGPP
 
 using namespace std;
 
-System::System() {
+System::System(Options opt): options(opt) {
     /*
         Hardware initialize order:
             0. Memory
@@ -47,7 +47,7 @@ System::System() {
     LOG(INFO) << "Initialized bus...";
 
     // Initialize cpu with bus
-    cpu.reset(new Processor(bus, cp0));
+    cpu.reset(new Processor(bus, cp0, options.debug));
     LOG(INFO) << "Initialized CPU...";
 
     // Initialize demo instructions
@@ -69,16 +69,16 @@ System::System() {
         "beq     $s1, $zero, exit",
         "# assemble the color",
         "add     $t0, $zero, $t1",
-        "sll     $t0, 8",
+        "sll     $t0, $t0, 8",
         "add     $t0, $t0, $t2",
-        "sll     $t0, 8",
+        "sll     $t0, $t0, 8",
         "add     $t0, $t0, $t3",
         "# draw pixel",
         "sw      $t0, 0($s0)",
         "# change color",
-        "addi    $t1, $t1, 1",
-        "addi    $t2, $t2, -1",
-        "addi    $t3, $t3, -1",
+        "addi    $t1, $t1, -1",
+        "addi    $t2, $t2, 0",
+        "addi    $t3, $t3, 1",
         "# add vga address",
         "addi    $s0, $s0, 1",
         "# sub loop variable",
@@ -103,12 +103,14 @@ System::System() {
         LOG(INFO) << "CPU starts to run...";
         for (;;) {
             cpu->tick();
-            if (shouldQuit) {
+            if (systemShouldQuit) {
                 LOG(INFO) << "CPU exited";
                 break;
             }
-            //this_thread::sleep_for(chrono::milliseconds(1));
-            // cin.get();
+            // this_thread::sleep_for(chrono::milliseconds(1));
+            if (options.debug) {
+                cin.get();
+            }
         }
     });
 
@@ -117,7 +119,7 @@ System::System() {
         vga->pollEvents();
         if (vga->shouldQuit) {
             LOG(INFO) << "VGA exited";
-            shouldQuit = true;
+            systemShouldQuit = true;
             break;
         }
     }

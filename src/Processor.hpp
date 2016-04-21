@@ -10,8 +10,8 @@
 
 class Processor {
 public:
-    Processor(std::shared_ptr<Bus> bus, std::shared_ptr<Coprocessor> cp0):
-            d(), pc(0), regs(), bus(bus), cp0(cp0) {};
+    Processor(std::shared_ptr<Bus> bus, std::shared_ptr<Coprocessor> cp0, bool debug):
+            d(), pc(0), regs(), bus(bus), cp0(cp0), debug(debug) {};
     void tick();
 
     // getter
@@ -37,6 +37,8 @@ private:
 
     // dump register
     void dump() const;
+
+    bool debug;
 };
 
 #endif
