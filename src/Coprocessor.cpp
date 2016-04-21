@@ -5,15 +5,15 @@
 #include "Coprocessor.hpp"
 
 bool Coprocessor::interruptable() const {
-    return (regs[12] & 1) == 1;
+    return (regs[12] & 1) != 0;
 }
 
 bool Coprocessor::excepting() const {
-    return (regs[12] & 2) == 1;
+    return (regs[12] & 2) != 0;
 }
 
 bool Coprocessor::userMode() const {
-    return (regs[12] & 16) == 1;
+    return (regs[12] & 16) != 0;
 }
 
 bool Coprocessor::deviceInterruptable(const uint32_t busCode) const {
