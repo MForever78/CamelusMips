@@ -34,20 +34,21 @@ VGA::VGA() {
             ratio = width / (float) height;
 
             glClear(GL_COLOR_BUFFER_BIT);
-            glRasterPos2i(-1, -1);
+            // glRasterPos2i(-1, -1);
             glDrawPixels(800, 600, GL_RGB, GL_UNSIGNED_BYTE, vram);
             glfwSwapBuffers(window);
         }
 
-        glfwDestroyWindow(window);
+        shouldQuit = true;
     });
 }
 
 VGA::~VGA() {
-    glfwTerminate();
     monitor->join();
+    glfwDestroyWindow(window);
+    glfwTerminate();
 }
 
 void VGA::pollEvents() {
-    glfwPollEvents();
+    glfwWaitEvents();
 }

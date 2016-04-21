@@ -2,6 +2,8 @@
 #define SYSTEM_H
 
 #include <memory>
+#include <atomic>
+#include <thread>
 
 #include "Assembler.hpp"
 #include "Bus.hpp"
@@ -13,7 +15,6 @@
 class System {
 public:
     System();
-    ~System();
 
 private:
     std::shared_ptr<Bus> bus;
@@ -23,6 +24,7 @@ private:
     std::shared_ptr<Memory> memory;
 
     std::thread *process;
+    std::atomic<bool> shouldQuit;
 };
 
 #endif

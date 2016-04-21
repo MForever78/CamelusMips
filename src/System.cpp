@@ -40,7 +40,7 @@ System::System() {
     vector<pair<Range, shared_ptr<Device>>> busOption;
 
     busOption.push_back(make_pair(Range(0x00000000, 0x7FFFFFFF), static_pointer_cast<Device>(memory)));
-    busOption.push_back(make_pair(Range(0x80000001, 0x80FFFFFF), static_pointer_cast<Device>(vga)));
+    busOption.push_back(make_pair(Range(0x80000000, 0x80FFFFFF), static_pointer_cast<Device>(vga)));
 
     // Initialize bus with IO space config
     bus.reset(new Bus(busOption));
@@ -52,13 +52,40 @@ System::System() {
 
     // Initialize demo instructions
     const string instLiteral[] = {
-        "start:",
-        "       add    $t0, $zero, $zero",
-        "       addi   $t0, $t0, 15",
-        "loop:  add    $t1, $t0, $zero",
-        "       addi   $t0, $t0, -1",
-        "       bne    $t0, $zero, loop",
-        "exit:  j      start"
+        "# s0 is the vram base addr",
+        "lui     $s0, 0x8000",
+        "# s1 is the loop uppper bound",
+        "lui     $s1, 0x0007",
+        "addi    $s1, $s1, 0x5300",
+        "# t0 is the color",
+        "add     $t0, $zero, $zero",
+        "# t1 is red",
+        "addi    $t1, $zero, 255",
+        "# t2 is green",
+        "add     $t2, $zero, $zero",
+        "# t3 is blue",
+        "add     $t3, $zero, $zero",
+        "draw:",
+        "beq     $s1, $zero, exit",
+        "# assemble the color",
+        "add     $t0, $zero, $t1",
+        "sll     $t0, 8",
+        "add     $t0, $t0, $t2",
+        "sll     $t0, 8",
+        "add     $t0, $t0, $t3",
+        "# draw pixel",
+        "sw      $t0, 0($s0)",
+        "# change color",
+        "addi    $t1, $t1, 1",
+        "addi    $t2, $t2, -1",
+        "addi    $t3, $t3, -1",
+        "# add vga address",
+        "addi    $s0, $s0, 1",
+        "# sub loop variable",
+        "addi    $s1, $s1, -1",
+        "j       draw",
+        "exit:",
+        "j       exit"
     };
 
     vector<string> inst(instLiteral, instLiteral + sizeof(instLiteral) / sizeof(string));
@@ -66,6 +93,7 @@ System::System() {
     LOG(INFO) << "Assembled instructions...";
 
     vector<Assembly> instAssembled = assembler.getInstAssembled();
+    LOG(INFO) << "Assembly length: " << instAssembled.size();
 
     // Load instructions into memory
     memory->load(instAssembled);
@@ -75,17 +103,25 @@ System::System() {
         LOG(INFO) << "CPU starts to run...";
         for (;;) {
             cpu->tick();
-            this_thread::sleep_for(chrono::milliseconds(1000));
+            if (shouldQuit) {
+                LOG(INFO) << "CPU exited";
+                break;
+            }
+            //this_thread::sleep_for(chrono::milliseconds(1));
+            // cin.get();
         }
     });
 
     for (;;) {
         // Must pull events in the main thread
         vga->pollEvents();
-        this_thread::sleep_for(chrono::milliseconds(100));
+        if (vga->shouldQuit) {
+            LOG(INFO) << "VGA exited";
+            shouldQuit = true;
+            break;
+        }
     }
-}
 
-System::~System() {
     process->join();
+    LOG(INFO) << "System shutting down...";
 }

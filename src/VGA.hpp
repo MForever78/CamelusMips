@@ -2,10 +2,13 @@
 #define VGA_H
 
 #include <thread>
+#include <atomic>
 #include <cstdint>
 #include "GLFW/glfw3.h"
 #include "OpenGL/gl.h"
 #include "Device.hpp"
+
+#include "easylogging++.h"
 
 class VGA: public Device {
 public:
@@ -16,6 +19,7 @@ public:
     void pollEvents();
 
     inline void set(const std::uint32_t data) override {
+
         int row = operatingAddress / 800;
         int col = operatingAddress - row * 800;
         GLubyte blue = static_cast<GLubyte>(data);
@@ -40,6 +44,8 @@ public:
 
         return data;
     }
+
+    std::atomic<bool> shouldQuit {false};
 
 private:
     GLFWwindow *window;
