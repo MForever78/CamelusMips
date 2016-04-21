@@ -19,8 +19,10 @@ using namespace std;
 
 System::System() {
     /*
-        Hardware initailize order:
+        Hardware initialize order:
+            0. Memory
             1. VGA
+            2. Coprocessor 0 as a special member of bus
             2. Bus, with peripherals as parameter
             3. CPU, with bus as parameter
     */
@@ -30,6 +32,9 @@ System::System() {
 
     vga.reset(new VGA());
     LOG(INFO) << "Initialized VGA...";
+
+    cp0.reset(new Coprocessor());
+    LOG(INFO) << "Initialized Coprocessor 0...";
 
     // Initialize IO space
     vector<pair<Range, shared_ptr<Device>>> busOption;
@@ -42,7 +47,7 @@ System::System() {
     LOG(INFO) << "Initialized bus...";
 
     // Initialize cpu with bus
-    cpu.reset(new Processor(bus));
+    cpu.reset(new Processor(bus, cp0));
     LOG(INFO) << "Initialized CPU...";
 
     // Initialize demo instructions

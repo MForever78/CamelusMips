@@ -8,15 +8,16 @@
 #include "Processor.hpp"
 #include "VGA.hpp"
 #include "Memory.hpp"
+#include "Coprocessor.hpp"
 
 class System {
 public:
     System();
     ~System();
-    void initVGA();
 
 private:
     std::shared_ptr<Bus> bus;
+    std::shared_ptr<Coprocessor> cp0;
     std::shared_ptr<Processor> cpu;
     std::shared_ptr<VGA> vga;
     std::shared_ptr<Memory> memory;
