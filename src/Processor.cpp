@@ -41,8 +41,8 @@ void Processor::tick() {
                     regs[d.rd] = (int32_t)(regs[d.rs] - regs[d.rt]) < 0 ? 1 : 0; break;    // slt
                 case 0b101011:
                     regs[d.rd] = (int32_t)(regs[d.rs] - regs[d.rt]) < 0 ? 1 : 0; break;    // sltu
-                case 0b000000: regs[d.rd] = regs[d.rt] << regs[d.shamt]; break;   // sll
-                case 0b000010: regs[d.rd] = regs[d.rt] >> regs[d.shamt]; break;   // srl
+                case 0b000000: regs[d.rd] = regs[d.rt] << d.shamt; break;   // sll
+                case 0b000010: regs[d.rd] = regs[d.rt] >> d.shamt; break;   // srl
                 case 0b000011:
                     regs[d.rd] = (uint32_t)((int32_t)regs[d.rs] >> regs[d.rt]);   // sra
                     break; 
@@ -72,8 +72,10 @@ void Processor::tick() {
         case 0b000011: regs[31] = pc; pc = d.address; break;                          // jal
     }
 
-    //dump();
-    //cout << "0x" << setfill('0') << setw(8) << hex << ((pc >> 2) - 1) << endl << endl;
+    if (debug) {
+        dump();
+        cout << "PC: 0x" << setfill('0') << setw(8) << hex << ((pc >> 2) - 1) << endl << endl;
+    }
 }
 
 void Processor::dump() const {
