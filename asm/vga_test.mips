@@ -1,0 +1,39 @@
+# s0 is the vram base addr
+lui     $s0, 0x8000
+# s1 is the loop uppper bound
+lui     $s1, 0x0007
+addi    $s1, $s1, 0x5300
+# t0 is the color
+add     $t0, $zero, $zero
+# t1 is red
+addi    $t1, $zero, 255
+# t2 is green
+add     $t2, $zero, $zero
+# t3 is blue
+add     $t3, $zero, $zero
+
+draw:
+beq     $s1, $zero, exit
+# assemble the color
+add     $t0, $zero, $t1
+sll     $t0, 8
+add     $t0, $t0, $t2
+sll     $t0, 8
+add     $t0, $t0, $t3
+
+# draw pixel
+sw      $t0, 0($s0)
+
+# change color
+addi    $t1, $t1, -1
+addi    $t2, $t2, 1
+addi    $t3, $t3, 1
+
+# add vga address
+addi    $s0, $s0, 1
+# sub loop variable
+addi    $s1, $s1, -1
+j       draw
+
+exit:
+j       exit
