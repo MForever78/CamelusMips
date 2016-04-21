@@ -85,6 +85,7 @@ TEST(AssemblerTest, JrRTypeTest) {
 TEST(AssemblerTest, RegularITypeTest) {
     std::string instLiteral[] = {
         "addi   $t0, $t1, -78",
+        "addi   $t0, $t1, 0x10ff",
         "addiu  $t0, $t1, 78",
         "andi   $t0, $t1, 78",
         "ori    $t0, $t1, 78",
@@ -95,6 +96,7 @@ TEST(AssemblerTest, RegularITypeTest) {
 
     std::uint32_t assemblyLiteral[] = {
         0b00100001001010001111111110110010,     // addi
+        0b00100001001010000001000011111111,     // addi
         0b00100101001010000000000001001110,     // addiu
         0b00110001001010000000000001001110,     // andi
         0b00110101001010000000000001001110,     // ori
@@ -112,11 +114,13 @@ TEST(AssemblerTest, RegularITypeTest) {
 
 TEST(AssemblerTest, LuiITypeTest) {
     std::string instLiteral[] = {
-        "lui    $t0, 100"
+        "lui    $t0, 100",
+        "lui    $t0, 0x1000"
     };
 
     std::uint32_t assemblyLiteral[] = {
-        0b00111100000010000000000001100100      // lui
+        0b00111100000010000000000001100100,     // lui
+        0b00111100000010000001000000000000
     };
 
     Assembler assembler(std::vector<std::string> (instLiteral, instLiteral + sizeof(instLiteral) / sizeof(std::string)));
