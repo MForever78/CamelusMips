@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "Device.hpp"
+#include "Coprocessor.hpp"
 
 class Range {
 public:
@@ -32,11 +33,13 @@ private:
 
 class Bus {
 public:
-    Bus(const std::vector<std::pair<Range, std::shared_ptr<Device>>> &devices): devices(devices) {};
+    explicit Bus(const std::vector<std::pair<Range, std::shared_ptr<Device>>> &devices): devices(devices) {};
     std::shared_ptr<Device> at(const std::uint32_t addr);
+    void updateInterruptingDevice();
 
 private:
     std::vector<std::pair<Range, std::shared_ptr<Device>>> devices;
+    std::shared_ptr<Coprocessor> cp0;
 };
 
 #endif

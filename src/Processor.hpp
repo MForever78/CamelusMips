@@ -5,24 +5,23 @@
 #include <cstdint>
 #include "Assembly.hpp"
 #include "Disassembler.hpp"
+#include "Coprocessor.hpp"
 #include "Bus.hpp"
 
 class Processor {
 public:
-    Processor(std::shared_ptr<Bus> bus): pc(0), regs(), bus(bus) {};
+    Processor(std::shared_ptr<Bus> bus, std::shared_ptr<Coprocessor> cp0):
+            d(), pc(0), regs(), bus(bus), cp0(cp0) {};
     void tick();
 
-    // setter
-    void load(std::vector<Assembly> &instIn);
-
     // getter
-    uint32_t getPC() const {
+    std::uint32_t getPC() const {
         return pc;
     }
 
 private:
-    // status
-    bool running;
+    // constants
+    static const std::uint32_t interruptHandlerAddress;
 
     // helper
     Disassembler d;
@@ -31,6 +30,10 @@ private:
     std::uint32_t pc;
     std::uint32_t regs[32];
     std::shared_ptr<Bus> bus;
+    std::shared_ptr<Coprocessor> cp0;
+
+    // handle interruption
+    void handleInterruption();
 };
 
 #endif

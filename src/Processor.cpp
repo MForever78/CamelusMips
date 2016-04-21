@@ -1,18 +1,29 @@
 #include <vector>
-#include <memory>
 #include <iostream>
 #include <iomanip>
 #include <thread>
-#include <chrono>
 
 #include "Processor.hpp"
-#include "Device.hpp"
 
 using namespace std;
+
+const uint32_t Processor::interruptHandlerAddress = 0x00010000;
+
+void Processor::handleInterruption() {
+    if (cp0->interruptable() && cp0->interrupting()) {
+        // save current PC to EPC
+        cp0->regs[14] = pc;
+        // set PC to interrupt handler address
+        pc = interruptHandlerAddress;
+        // disable interrupt from the same device
+        cp0->disableInterruptForCode(cp0->interruptingBusCode());
+    }
+}
 
 void Processor::tick() {
     d.deAsm(bus->at(pc >> 2)->get());
     pc += 4;
+    handleInterruption();
 
     switch(d.opcode) {
         case 0b000000:
