@@ -1,7 +1,6 @@
 #include <cstdint>
 
 #include "Disassembler.hpp"
-#include "Assembly.hpp"
 
 using namespace std;
 

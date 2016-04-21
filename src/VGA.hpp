@@ -18,9 +18,9 @@ public:
     inline void set(const std::uint32_t data) override {
         int row = operatingAddress / 800;
         int col = operatingAddress - row * 800;
-        GLubyte blue = data;
-        GLubyte green = data >> 8;
-        GLubyte red = data >> 16;
+        GLubyte blue = static_cast<GLubyte>(data);
+        GLubyte green = static_cast<GLubyte>(data >> 8);
+        GLubyte red = static_cast<GLubyte>(data >> 16);
 
         vram[row][col][0] = red;
         vram[row][col][1] = green;
@@ -44,8 +44,6 @@ public:
 private:
     GLFWwindow *window;
     std::thread *monitor;
-
-    void draw();
 };
 
 #endif
