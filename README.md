@@ -14,13 +14,18 @@ Yet Another MIPS Emulator.
 
 - [x] Assembler
 - [x] Disassembler
+    - [x] Basic intructions
+    - [ ] Advanced intructions
+    - [ ] Directives
 - [x] Exporter
     - [x] Export to Xilinx coe file, ASCII hex, ASCII bin, and binary file
 - [x] MIPS CPU core
+    - [x] Interrupt
+    - [ ] Exception
 - [ ] Basic GUI
 - [ ] Peripheral 
     - [x] VGA
-    - [ ] Timer
+    - [x] Timer
     - [ ] PS2 keyboard
     - [ ] Serial port
     - [ ] Ethernet
