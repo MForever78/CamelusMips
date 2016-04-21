@@ -1,8 +1,10 @@
 #include "Bus.hpp"
+#include <iomanip>
 
 using namespace std;
 
 shared_ptr<Device> Bus::at(const uint32_t addr) {
+    // cout << "Accessing address: " << "0x" << setfill('0') << setw(8) << hex << addr << endl;
     for (auto &device: devices) {
         if (device.first.compare(addr) == 0) {
             uint32_t relativeAddr = device.first.getRelativeAddr(addr);

@@ -61,8 +61,8 @@ void Processor::tick() {
         case 0b001101: regs[d.rt] = regs[d.rs] | d.signedExtImm; break;               // ori
         case 0b001110: regs[d.rt] = regs[d.rs] ^ d.signedExtImm; break;               // xori
         case 0b001111: regs[d.rt] = d.signedExtImm << 16; break;                      // lui
-        case 0b100011: regs[d.rt] = bus->at(d.rs + d.signedExtImm)->get(); break;     // lw
-        case 0b101011: bus->at(d.rs + d.signedExtImm)->set(regs[d.rt]); break;        // sw
+        case 0b100011: regs[d.rt] = bus->at(regs[d.rs] + d.signedExtImm)->get(); break;     // lw
+        case 0b101011: bus->at(regs[d.rs] + d.signedExtImm)->set(regs[d.rt]); break;        // sw
         case 0b000100: if (regs[d.rs] == regs[d.rt]) pc += d.signedExtImm; break;     // beq
         case 0b000101: if (regs[d.rt] != regs[d.rs]) pc += d.signedExtImm; break;     // bne
         case 0b001010: regs[d.rt] = regs[d.rs] < d.signedExtImm ? 1 : 0; break;       // slti
@@ -72,5 +72,24 @@ void Processor::tick() {
         case 0b000011: regs[31] = pc; pc = d.address; break;                          // jal
     }
 
-    cout << "0x" << setfill('0') << setw(8) << hex << pc << endl;
+    //dump();
+    //cout << "0x" << setfill('0') << setw(8) << hex << ((pc >> 2) - 1) << endl << endl;
+}
+
+void Processor::dump() const {
+    const static string regNames[] = {
+        "zero", "at",
+        "v0", "v1", "a0", "a1", "a2", "a3",
+        "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+        "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+        "t8", "t9",
+        "k0", "k1",
+        "gp", "sp", "fp", "ra"
+    };
+
+    for (int i = 0; i < 32; ++i) {
+        cout << regNames[i] << ": " << "0x" << setfill('0') << setw(8) << hex << regs[i] << "\t";
+        if (((i + 1) % 8) == 0)
+            cout << endl;
+    }
 }

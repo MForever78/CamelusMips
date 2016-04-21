@@ -34,6 +34,9 @@ private:
 
     // handle interruption
     void handleInterruption();
+
+    // dump register
+    void dump() const;
 };
 
 #endif
