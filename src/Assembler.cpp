@@ -1,14 +1,9 @@
 #include <regex>
 #include <map>
-#include <cstdint>
-#include <cstdio>
 #include <bitset>
-#include <string>
-#include <stdexcept>
 #include <stack>
 
 #include "Assembler.hpp"
-#include "Assembly.hpp"
 
 using namespace std;
 
@@ -68,8 +63,7 @@ Assembler::Assembler() {
 
 }
 
-Assembler::Assembler(const vector<string> &instOriginal) {
-    instTrimmed = instOriginal;
+Assembler::Assembler(const vector<string> &instOriginal): instTrimmed(instOriginal) {
     symbolTable = generateSymbolTable(instTrimmed);
     substituteLabels(instTrimmed);
 
@@ -360,7 +354,7 @@ uint32_t Assembler::getOperand(const string &operandName) {
     };
 
     for (int i = 0; i < 32; ++i) {
-        if (regNames[i] == operandName) return i;
+        if (regNames[i] == operandName) return static_cast<uint32_t>(i);
     }
 
     // Syntax Error

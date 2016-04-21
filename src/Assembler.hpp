@@ -12,7 +12,7 @@
 class Assembler {
 public:
     Assembler();
-    Assembler(const std::vector<std::string> &instOriginal);
+    explicit Assembler(const std::vector<std::string> &instOriginal);
 
     // getter
     std::vector<Assembly> getInstAssembled() const;
