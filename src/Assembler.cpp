@@ -14,13 +14,13 @@ const regex Assembler::jTypeExp ("(jal|j)\\b");
 const regex Assembler::branchExp ("(beq|bne)\\b");
 const regex Assembler::jumpExp ("(jal|j)\\b");
 
-const regex Assembler::immExp ("([0-9+-]+$)");
+const regex Assembler::immExp ("([0-9a-fA-FxX+-]+$)");
 const regex Assembler::labelExp ("\\s+([a-zA-Z_]\\w*)");
 const regex Assembler::operandExp ("\\$(\\w+)");
 const regex Assembler::operandsExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*\\$(\\w+)");
-const regex Assembler::operandWithImmExp ("\\$(\\w+),\\s*([0-9+-]+)$");
-const regex Assembler::operandsWithAddrExp ("\\$(\\w+),\\s*([0-9+-]+)\\s*\\(\\$(\\w+)\\)");
-const regex Assembler::operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*([0-9+-]+)");
+const regex Assembler::operandWithImmExp ("\\$(\\w+),\\s*([0-9a-fA-FxX+-]+)$");
+const regex Assembler::operandsWithAddrExp ("\\$(\\w+),\\s*([0-9a-fA-FxX+-]+)\\s*\\(\\$(\\w+)\\)");
+const regex Assembler::operandsWithImmExp ("\\$(\\w+),\\s*\\$(\\w+),\\s*([0-9a-fA-FxX+-]+)");
 const regex Assembler::operandsWithLabelExp ("\\$\\w+,\\s*\\$\\w+,\\s*([a-zA-Z_]\\w*)");
 
 const map<string, int> Assembler::funcMap = {
@@ -195,7 +195,7 @@ void Assembler::substituteLabels(vector<string> &inst) {
                     throw logic_error("Label not found: " + labelName);
                 }
 
-                int absoluteAddr = it->second;
+                int absoluteAddr = it->second * 4;
 
                 inst[i] = regex_replace(inst[i], regex(labelName), to_string(absoluteAddr));
             }
@@ -275,7 +275,7 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
 
         rs = getOperand(rsName);
         rt = getOperand(rtName);
-        imm = static_cast<uint32_t>(stoi(immName));
+        imm = static_cast<uint32_t>(stoi(immName, nullptr, 0));
     } else if (regex_search(inst, operandWithImm, operandWithImmExp)) {
         // lui
         opcode = opcodeMap.at(funcName);
@@ -284,7 +284,7 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
 
         rs = 0b00000;
         rt = getOperand(rtName);
-        imm = static_cast<uint32_t>(stoi(immName));
+        imm = static_cast<uint32_t>(stoi(immName, nullptr, 0));
     } else if (regex_search(inst, operandsWithAddr, operandsWithAddrExp)) {
         // Save load I-type
         opcode = opcodeMap.at(funcName);
@@ -294,7 +294,7 @@ Assembly Assembler::getITypeAssembly(const string &inst, const smatch &match) {
 
         rs = getOperand(rsName);
         rt = getOperand(rtName);
-        imm = static_cast<uint32_t>(stoi(immName));
+        imm = static_cast<uint32_t>(stoi(immName, nullptr, 0));
     } else {
         // Syntax Error
         throw logic_error("Syntax error with I-type statement: " + inst);
@@ -318,7 +318,7 @@ Assembly Assembler::getJTypeAssembly(const string &inst, const smatch &match) {
     if (regex_search(inst, immMatch, immExp)) {
         opcode = opcodeMap.at(funcName);
         immName = immMatch[0];
-        imm = static_cast<uint32_t>(stoi(immName));
+        imm = static_cast<uint32_t>(stoi(immName, nullptr, 0));
     } else {
         // Syntax Error
         throw logic_error("Syntax error with J-type statement: " + inst);
@@ -366,4 +366,10 @@ ostream &operator<< (ostream &os, const Assembler &assembler) {
         os << inst << endl;
     }
     return os;
+}
+
+void Assembler::printSymbolTable() {
+    for (auto symbol: symbolTable) {
+        cout << symbol.first << " " << symbol.second << endl;
+    }
 }

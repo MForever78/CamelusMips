@@ -70,6 +70,8 @@ private:
      * @param inst Instruction set with symbol table generated
      */
     void substituteLabels(std::vector<std::string> &inst);
+
+    void printSymbolTable();
 };
 
 #endif
