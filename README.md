@@ -1,4 +1,4 @@
-# CamelusMips
+# CamelusMips ![build_status](https://travis-ci.org/MForever78/CamelusMips.svg?branch=master)
 
 ![Camel](doc/camel.jpg)
 
