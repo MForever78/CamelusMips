@@ -5,6 +5,7 @@ install:
     - brew update
     - brew install glfw3
     - brew upgrade boost
+    - brew upgrade cmake
 script:
     - mkdir build && cd build
     - cmake ..
