@@ -4,7 +4,7 @@ compilger: clang
 install:
     - brew update
     - brew install glfw3
-    - brew install boost
+    - brew upgrade boost
 script:
     - mkdir build && cd build
     - cmake ..
