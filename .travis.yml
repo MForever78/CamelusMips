@@ -1,6 +1,11 @@
+os: osx
 language: cpp
+compilger: clang
+install:
+    - brew update
+    - brew install glfw3
+    - brew install boost
 script:
     - mkdir build && cd build
     - cmake ..
     - make
-install: make get-deps
