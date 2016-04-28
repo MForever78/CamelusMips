@@ -30,4 +30,14 @@ Yet Another MIPS Emulator.
     - [ ] Serial port
     - [ ] Ethernet
 - [ ] Advanced GUI
-- [ ] Command line tools
+- [x] Command line tools
+
+## Commandline Usage
+
+```
+$ ./CamelusMips [-d] [-f filepath] [-h]
+Supported options:
+  -d [ --debug ]        Enable debug mode
+  -f [ --file ] arg     Assign assembly file
+  -h [ --help ]         This help message
+```
