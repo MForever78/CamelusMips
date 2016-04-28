@@ -26,7 +26,7 @@ private:
     std::shared_ptr<Memory> memory;
 
     std::thread *process;
-    std::atomic<bool> systemShouldQuit;
+    std::atomic<bool> systemShouldQuit {false};
 
     Options options;
 };
