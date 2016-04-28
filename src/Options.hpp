@@ -12,7 +12,7 @@ public:
     Options(int argc, char *argv[]) {
         po::options_description desc("Supported options");
         desc.add_options()
-            ("debug,d", po::value<bool>(&debug)->default_value(true), "Enable debug mode")
+            ("debug,d", po::bool_switch()->default_value(false),      "Enable debug mode")
             ("file,f", po::value<std::string>(&filePath),             "Assign assembly file")
             ("help,h",                                                "This help message");
 
@@ -24,6 +24,8 @@ public:
             std::cout << desc << std::endl;
             exit(0);
         }
+
+        debug = vm["debug"].as<bool>();
     }
 
     bool debug = false;
