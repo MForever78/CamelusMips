@@ -13,10 +13,10 @@ Yet Another MIPS Emulator.
 ## Road Map
 
 - [x] Assembler
-- [x] Disassembler
     - [x] Basic intructions
     - [ ] Advanced intructions
     - [ ] Directives
+- [x] Disassembler
 - [x] Exporter
     - [x] Export to Xilinx coe file, ASCII hex, ASCII bin, and binary file
 - [x] MIPS CPU core
