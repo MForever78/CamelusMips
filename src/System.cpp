@@ -74,7 +74,7 @@ System::System(Options opt): options(opt) {
         "add     $a0, $a0, $t3",
         "jal     drawline",
         "# change color",
-        "addi    $t1, $t1, 0",
+        "addi    $t1, $t1, 1",
         "addi    $t2, $t2, 1",
         "addi    $t3, $t3, 0",
         "# sub loop variable",
@@ -92,7 +92,11 @@ System::System(Options opt): options(opt) {
         "j       exit"
     };
 
+    // Load demo instructions if external file is not specified
     vector<string> inst(instLiteral, instLiteral + sizeof(instLiteral) / sizeof(string));
+    if (options.instructions.size() > 0) {
+        inst = options.instructions;
+    }
     Assembler assembler(inst);
     LOG(INFO) << "Assembled instructions...";
 

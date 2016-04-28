@@ -1,6 +1,8 @@
 #ifndef OPTIONS_HPP
 #define OPTIONS_HPP
 
+#include <fstream>
+#include <vector>
 #include "boost/program_options.hpp"
 #include "easylogging++.h"
 
@@ -26,13 +28,24 @@ public:
         }
 
         debug = vm["debug"].as<bool>();
+        if (filePath.length() > 0) {
+            loadFile();
+        }
     }
 
     bool debug = false;
     std::string filePath;
+    std::vector<std::string> instructions;
 
 private:
-
+    void loadFile() {
+        std::ifstream ifs(filePath, std::ifstream::in);
+        std::string line;
+        while (!ifs.eof()) {
+            std::getline(ifs, line);
+            instructions.push_back(line);
+        }
+    }
 };
 
 #endif
