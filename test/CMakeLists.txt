@@ -4,7 +4,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
 ## Build Test Executables
 INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include)                                   
 SET(TEST_BIN ${PROJECT_NAME}-unittests)
-ADD_EXECUTABLE(${TEST_BIN} ${TEST_SRCS} ${PROJECT_SRCS})                                       
+ADD_EXECUTABLE(${TEST_BIN} ${TEST_SRCS} ${PROJECT_SRCS} ../src/Exception.hpp)
 TARGET_LINK_LIBRARIES(${TEST_BIN} ${PROJECT_LIBS} ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} easylogging gtest_main)
 
 ## Setup (Automatic) Unit Testing

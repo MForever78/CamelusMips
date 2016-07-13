@@ -4,6 +4,7 @@
 #include <thread>
 
 #include "Processor.hpp"
+#include "Exception.hpp"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ void Processor::handleInterruption() {
     }
 }
 
-void Processor::tick() {
+void Processor::tick() throw() {
     d.deAsm(bus->at(pc >> 2)->get());
     pc += 4;
     handleInterruption();
@@ -52,6 +53,7 @@ void Processor::tick() {
                     regs[d.rd] = (uint32_t)((int32_t)regs[d.rt] >> regs[d.rs]);   // srav
                     break;
                 case 0b001000: pc = regs[d.rs]; break;                            // jr
+                default: throw InvalidInstructionException();
             }
             break;
         // I-type instruction
@@ -70,6 +72,7 @@ void Processor::tick() {
         // J-type instruction
         case 0b000010: pc = d.address; break;                                         // j
         case 0b000011: regs[31] = pc; pc = d.address; break;                          // jal
+        default: throw InvalidInstructionException();
     }
 
     if (debug) {
