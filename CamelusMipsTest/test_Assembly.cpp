@@ -1,9 +1,9 @@
 #include <cstdint>
-#include "gtest/gtest.h"
+#include "catch.hpp"
 
-#include "../src/Assembly.hpp"
+#include "Assembly.hpp"
 
-TEST(AssemblyTest, InitializeTest) {
+TEST_CASE("Assembly test") {
     std::uint32_t foo = 78;
     std::uint32_t bar = 78;
     std::uint32_t notFoo = 87;
@@ -11,6 +11,6 @@ TEST(AssemblyTest, InitializeTest) {
     Assembly barAssembly(bar);
     Assembly notFooAssembly(notFoo);
 
-    EXPECT_EQ(fooAssembly, barAssembly);
-    EXPECT_NE(fooAssembly, notFooAssembly);
+    CHECK(fooAssembly == barAssembly);
+    CHECK(fooAssembly != notFooAssembly);
 }

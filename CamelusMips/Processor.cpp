@@ -21,7 +21,7 @@ void Processor::handleInterruption() {
     }
 }
 
-void Processor::tick() throw() {
+void Processor::tick() {
     d.deAsm(bus->at(pc >> 2)->get());
     pc += 4;
     handleInterruption();

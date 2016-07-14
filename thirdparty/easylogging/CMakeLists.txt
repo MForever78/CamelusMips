@@ -1,2 +1,0 @@
-add_library(easylogging INTERFACE)
-target_include_directories(easylogging INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

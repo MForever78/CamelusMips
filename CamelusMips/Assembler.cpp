@@ -231,7 +231,7 @@ Assembly Assembler::getRTypeAssembly(const string &inst, const smatch &match) {
         rs = 0b00000;
         rd = getOperand(rdName);
         rt = getOperand(rtName);
-        shamt = stoul(immName);
+        shamt = static_cast<uint32_t>(stoul(immName));
         func = funcMap.at(funcName);
     } else if (regex_search(inst, operand, operandExp)) {
         // JR

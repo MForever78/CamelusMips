@@ -7,7 +7,7 @@
 
 #include <stdexcept>
 
-class InvalidInstructionException: public exception {
+class InvalidInstructionException: public std::exception {
     virtual const char *what() const throw() {
         return "Invalid instruction caught";
     }
