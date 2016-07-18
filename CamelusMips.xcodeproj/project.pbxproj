@@ -41,6 +41,7 @@
 		40F18C921D3D0950004466CE /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF651D37E62B007614C8 /* libboost_program_options.dylib */; };
 		40F18C931D3D0950004466CE /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF661D37E62B007614C8 /* libboost_system.dylib */; };
 		40F18C941D3D0950004466CE /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF631D37E601007614C8 /* libboost_filesystem.dylib */; };
+		40F18C971D3D1B39004466CE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 40F18C961D3D1B39004466CE /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,30 +67,30 @@
 
 /* Begin PBXFileReference section */
 		4057CEF31D37CC13007614C8 /* CamelusMips */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CamelusMips; sourceTree = BUILT_PRODUCTS_DIR; };
-		4057CF1D1D37CCE1007614C8 /* Assembler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Assembler.cpp; path = CamelusMips/Assembler.cpp; sourceTree = "<group>"; };
-		4057CF1E1D37CCE1007614C8 /* Assembler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Assembler.hpp; path = CamelusMips/Assembler.hpp; sourceTree = "<group>"; };
-		4057CF1F1D37CCE1007614C8 /* Exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Exception.hpp; path = CamelusMips/Exception.hpp; sourceTree = "<group>"; };
-		4057CF201D37CCE1007614C8 /* Processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Processor.cpp; path = CamelusMips/Processor.cpp; sourceTree = "<group>"; };
-		4057CF211D37CCE1007614C8 /* System.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = System.hpp; path = CamelusMips/System.hpp; sourceTree = "<group>"; };
-		4057CF221D37CCE1007614C8 /* Options.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Options.hpp; path = CamelusMips/Options.hpp; sourceTree = "<group>"; };
-		4057CF231D37CCE1007614C8 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = System.cpp; path = CamelusMips/System.cpp; sourceTree = "<group>"; };
-		4057CF241D37CCE1007614C8 /* Processor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Processor.hpp; path = CamelusMips/Processor.hpp; sourceTree = "<group>"; };
-		4057CF251D37CCE1007614C8 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = CamelusMips/main.cpp; sourceTree = "<group>"; };
-		4057CF261D37CCE1007614C8 /* Coprocessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Coprocessor.cpp; path = CamelusMips/Coprocessor.cpp; sourceTree = "<group>"; };
-		4057CF271D37CCE1007614C8 /* VGA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VGA.cpp; path = CamelusMips/VGA.cpp; sourceTree = "<group>"; };
-		4057CF281D37CCE1007614C8 /* VGA.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = VGA.hpp; path = CamelusMips/VGA.hpp; sourceTree = "<group>"; };
-		4057CF291D37CCE1007614C8 /* Bus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Bus.cpp; path = CamelusMips/Bus.cpp; sourceTree = "<group>"; };
-		4057CF2B1D37CCE1007614C8 /* Coprocessor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Coprocessor.hpp; path = CamelusMips/Coprocessor.hpp; sourceTree = "<group>"; };
-		4057CF2C1D37CCE1007614C8 /* Bus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bus.hpp; path = CamelusMips/Bus.hpp; sourceTree = "<group>"; };
-		4057CF2D1D37CCE1007614C8 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Timer.hpp; path = CamelusMips/Timer.hpp; sourceTree = "<group>"; };
-		4057CF2E1D37CCE1007614C8 /* Device.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Device.hpp; path = CamelusMips/Device.hpp; sourceTree = "<group>"; };
-		4057CF2F1D37CCE1007614C8 /* Disassembler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Disassembler.hpp; path = CamelusMips/Disassembler.hpp; sourceTree = "<group>"; };
-		4057CF301D37CCE1007614C8 /* Disassembler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Disassembler.cpp; path = CamelusMips/Disassembler.cpp; sourceTree = "<group>"; };
-		4057CF311D37CCE1007614C8 /* Assembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Assembly.hpp; path = CamelusMips/Assembly.hpp; sourceTree = "<group>"; };
+		4057CF1D1D37CCE1007614C8 /* Assembler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assembler.cpp; sourceTree = "<group>"; };
+		4057CF1E1D37CCE1007614C8 /* Assembler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Assembler.hpp; sourceTree = "<group>"; };
+		4057CF1F1D37CCE1007614C8 /* Exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
+		4057CF201D37CCE1007614C8 /* Processor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Processor.cpp; sourceTree = "<group>"; };
+		4057CF211D37CCE1007614C8 /* System.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = System.hpp; sourceTree = "<group>"; };
+		4057CF221D37CCE1007614C8 /* Options.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Options.hpp; sourceTree = "<group>"; };
+		4057CF231D37CCE1007614C8 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = System.cpp; sourceTree = "<group>"; };
+		4057CF241D37CCE1007614C8 /* Processor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Processor.hpp; sourceTree = "<group>"; };
+		4057CF251D37CCE1007614C8 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4057CF261D37CCE1007614C8 /* Coprocessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Coprocessor.cpp; sourceTree = "<group>"; };
+		4057CF271D37CCE1007614C8 /* VGA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VGA.cpp; sourceTree = "<group>"; };
+		4057CF281D37CCE1007614C8 /* VGA.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VGA.hpp; sourceTree = "<group>"; };
+		4057CF291D37CCE1007614C8 /* Bus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bus.cpp; sourceTree = "<group>"; };
+		4057CF2B1D37CCE1007614C8 /* Coprocessor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Coprocessor.hpp; sourceTree = "<group>"; };
+		4057CF2C1D37CCE1007614C8 /* Bus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Bus.hpp; sourceTree = "<group>"; };
+		4057CF2D1D37CCE1007614C8 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
+		4057CF2E1D37CCE1007614C8 /* Device.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Device.hpp; sourceTree = "<group>"; };
+		4057CF2F1D37CCE1007614C8 /* Disassembler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Disassembler.hpp; sourceTree = "<group>"; };
+		4057CF301D37CCE1007614C8 /* Disassembler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Disassembler.cpp; sourceTree = "<group>"; };
+		4057CF311D37CCE1007614C8 /* Assembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Assembly.hpp; sourceTree = "<group>"; };
 		4057CF321D37CCE1007614C8 /* test_Bus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_Bus.cpp; sourceTree = "<group>"; };
-		4057CF341D37CCE1007614C8 /* Memory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Memory.hpp; path = CamelusMips/Memory.hpp; sourceTree = "<group>"; };
-		4057CF371D37CCE1007614C8 /* Exporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Exporter.cpp; path = CamelusMips/Exporter.cpp; sourceTree = "<group>"; };
-		4057CF381D37CCE1007614C8 /* Exporter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Exporter.hpp; path = CamelusMips/Exporter.hpp; sourceTree = "<group>"; };
+		4057CF341D37CCE1007614C8 /* Memory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Memory.hpp; sourceTree = "<group>"; };
+		4057CF371D37CCE1007614C8 /* Exporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Exporter.cpp; sourceTree = "<group>"; };
+		4057CF381D37CCE1007614C8 /* Exporter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Exporter.hpp; sourceTree = "<group>"; };
 		4057CF4B1D37D237007614C8 /* easylogging++.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "easylogging++.h"; path = "CamelusMips/easylogging++.h"; sourceTree = "<group>"; };
 		4057CF4D1D37D2CC007614C8 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = CamelusMips/catch.hpp; sourceTree = "<group>"; };
 		4057CF4E1D37DFF2007614C8 /* test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_main.cpp; sourceTree = "<group>"; };
@@ -104,6 +105,9 @@
 		4057CF771D37E862007614C8 /* test_Exporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_Exporter.cpp; sourceTree = "<group>"; };
 		4057CF781D37E862007614C8 /* test_Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_Memory.cpp; sourceTree = "<group>"; };
 		4057CF791D37E862007614C8 /* test_Disassembler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_Disassembler.cpp; sourceTree = "<group>"; };
+		40F18C961D3D1B39004466CE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		40F18C981D3D1CB0004466CE /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		40F18C991D3D1CB0004466CE /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,10 +141,12 @@
 		4057CEEA1D37CC13007614C8 = {
 			isa = PBXGroup;
 			children = (
+				40F18C9A1D3D1CBC004466CE /* Project Settings */,
 				4057CEF51D37CC13007614C8 /* CamelusMips */,
 				4057CF4C1D37D254007614C8 /* Library */,
 				4057CF561D37E06A007614C8 /* CamelusMipsTest */,
 				4057CEF41D37CC13007614C8 /* Products */,
+				40F18C961D3D1B39004466CE /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -154,14 +160,6 @@
 			sourceTree = "<group>";
 		};
 		4057CEF51D37CC13007614C8 /* CamelusMips */ = {
-			isa = PBXGroup;
-			children = (
-				4057CF491D37CCF5007614C8 /* Source */,
-			);
-			path = CamelusMips;
-			sourceTree = "<group>";
-		};
-		4057CF491D37CCF5007614C8 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				4057CF1D1D37CCE1007614C8 /* Assembler.cpp */,
@@ -188,8 +186,7 @@
 				4057CF371D37CCE1007614C8 /* Exporter.cpp */,
 				4057CF381D37CCE1007614C8 /* Exporter.hpp */,
 			);
-			name = Source;
-			path = ..;
+			path = CamelusMips;
 			sourceTree = "<group>";
 		};
 		4057CF4C1D37D254007614C8 /* Library */ = {
@@ -218,6 +215,15 @@
 				4057CF4E1D37DFF2007614C8 /* test_main.cpp */,
 			);
 			path = CamelusMipsTest;
+			sourceTree = "<group>";
+		};
+		40F18C9A1D3D1CBC004466CE /* Project Settings */ = {
+			isa = PBXGroup;
+			children = (
+				40F18C981D3D1CB0004466CE /* .travis.yml */,
+				40F18C991D3D1CB0004466CE /* .gitignore */,
+			);
+			name = "Project Settings";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,6 +305,7 @@
 			files = (
 				4057CF3F1D37CCE1007614C8 /* VGA.cpp in Sources */,
 				4057CF3C1D37CCE1007614C8 /* System.cpp in Sources */,
+				40F18C971D3D1B39004466CE /* README.md in Sources */,
 				4057CF401D37CCE1007614C8 /* Bus.cpp in Sources */,
 				4057CF471D37CCE1007614C8 /* Exporter.cpp in Sources */,
 				4057CF3B1D37CCE1007614C8 /* Processor.cpp in Sources */,
