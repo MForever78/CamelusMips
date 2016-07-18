@@ -36,6 +36,11 @@
 		4057CF7C1D37E862007614C8 /* test_Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4057CF771D37E862007614C8 /* test_Exporter.cpp */; };
 		4057CF7D1D37E862007614C8 /* test_Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4057CF781D37E862007614C8 /* test_Memory.cpp */; };
 		4057CF7E1D37E862007614C8 /* test_Disassembler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4057CF791D37E862007614C8 /* test_Disassembler.cpp */; };
+		40F18C901D3D093E004466CE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF731D37E713007614C8 /* OpenGL.framework */; };
+		40F18C911D3D0950004466CE /* libglfw3.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF691D37E676007614C8 /* libglfw3.3.2.dylib */; };
+		40F18C921D3D0950004466CE /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF651D37E62B007614C8 /* libboost_program_options.dylib */; };
+		40F18C931D3D0950004466CE /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF661D37E62B007614C8 /* libboost_system.dylib */; };
+		40F18C941D3D0950004466CE /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4057CF631D37E601007614C8 /* libboost_filesystem.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -87,7 +92,7 @@
 		4057CF381D37CCE1007614C8 /* Exporter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Exporter.hpp; path = CamelusMips/Exporter.hpp; sourceTree = "<group>"; };
 		4057CF4B1D37D237007614C8 /* easylogging++.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "easylogging++.h"; path = "CamelusMips/easylogging++.h"; sourceTree = "<group>"; };
 		4057CF4D1D37D2CC007614C8 /* catch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = catch.hpp; path = CamelusMips/catch.hpp; sourceTree = "<group>"; };
-		4057CF4E1D37DFF2007614C8 /* test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_main.cpp; path = ../test_main.cpp; sourceTree = "<group>"; };
+		4057CF4E1D37DFF2007614C8 /* test_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test_main.cpp; sourceTree = "<group>"; };
 		4057CF551D37E06A007614C8 /* CamelusMipsTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CamelusMipsTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4057CF631D37E601007614C8 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = /usr/local/Cellar/boost/1.60.0_2/lib/libboost_filesystem.dylib; sourceTree = "<absolute>"; };
 		4057CF651D37E62B007614C8 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = /usr/local/Cellar/boost/1.60.0_2/lib/libboost_program_options.dylib; sourceTree = "<absolute>"; };
@@ -118,6 +123,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40F18C901D3D093E004466CE /* OpenGL.framework in Frameworks */,
+				40F18C911D3D0950004466CE /* libglfw3.3.2.dylib in Frameworks */,
+				40F18C921D3D0950004466CE /* libboost_program_options.dylib in Frameworks */,
+				40F18C931D3D0950004466CE /* libboost_system.dylib in Frameworks */,
+				40F18C941D3D0950004466CE /* libboost_filesystem.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +444,11 @@
 		4057CF5A1D37E06A007614C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw3/3.2/lib,
+					/usr/local/Cellar/boost/1.60.0_2/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -441,6 +456,11 @@
 		4057CF5B1D37E06A007614C8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw3/3.2/lib,
+					/usr/local/Cellar/boost/1.60.0_2/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -464,6 +484,7 @@
 				4057CEFC1D37CC13007614C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4057CF591D37E06A007614C8 /* Build configuration list for PBXNativeTarget "CamelusMipsTest" */ = {
 			isa = XCConfigurationList;
@@ -472,6 +493,7 @@
 				4057CF5B1D37E06A007614C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
